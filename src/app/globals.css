@@ -1,0 +1,88 @@
+:root {--cor-bordas: #1aa7b4;}
+
+body{
+  text-align: center;
+  background-color: #333;
+  color: white;
+}
+.voltar{
+  margin-top: 20px;
+}
+.login{
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  min-height: 50vh; /* Ocupa 50% da altura da janela */
+  width: 600px;
+  border-radius: 10px;
+  margin: 10px auto 20px auto;
+  padding: 10px;
+  flex: 1; /* Faz o conteúdo crescer e empurrar o rodapé para baixo */
+}
+.entrar{
+  text-align: center;
+  align-content: center;
+  align-items: center;
+  align-self: center;
+  width: 50px;
+  font-size: 12px;
+  padding: 3px;
+}
+.falhaLogin{
+  margin: 3px;
+  font-weight: bold;
+}
+table{
+  border: 2px solid white;
+  border-collapse: collapse;
+  text-align: center;
+  margin-left: auto;
+  margin-right: auto;
+}
+td,th{
+  border: 1px solid white;
+  padding: 5px 15px 5px 15px;
+}
+.remover{
+  color: rgb(202,41,41);
+  cursor: pointer;
+  margin-left: 5px;
+}
+.editar{
+  color: rgb(228,245,39);
+  cursor: pointer;
+  display: inline-block;
+  transform: scaleX(-1);
+  margin-left: 5px;
+}
+.confirmEditar{
+  color: rgb(43,168,105);
+  cursor: pointer;
+  margin: 5px;
+}
+.cancelEditar{
+  color: rgb(176,179,177);
+  cursor: pointer;
+  margin-left: 5px;
+}
+a{
+  text-decoration: none;
+  color: inherit;
+}
+.novoUsuario{
+  border: 1px solid var(--cor-bordas);
+  width: 300px;
+  border-radius: 10px;
+  margin: 10px auto 20px auto;
+  padding: 5px;
+}
+#senhaNova{
+  margin-left: 15px;
+  margin-right: 10px;
+}
+.rodape_reset_senha {
+    background-color: #333;
+    color: white;
+    padding: 20px;
+    text-align: center;
+}
