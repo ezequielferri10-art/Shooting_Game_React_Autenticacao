@@ -28,7 +28,7 @@ export default function Dashboard() {
 			<h1>Bem vindo à sua página!!!</h1>
 			<p>Score atual: {score}</p>
 			<br /><br />
-			<Link href='/canvas' target='_blank' rel='noopener noreferrer'><button>Jogar</button></Link>
+			<Link href='/dashboard/canvas' target='_blank' rel='noopener noreferrer'><button>Jogar</button></Link>
 
 			<br /><br />
 			<BotaoLogout />

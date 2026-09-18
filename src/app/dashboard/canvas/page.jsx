@@ -50,7 +50,7 @@ const Canvas = () => {
         this.directionY = Math.random() * 4 - 2.5;
         this.markForDeletion = false;
         this.image = new Image();
-        this.image.src = "babul.png"; 
+        this.image.src = "/babul.png"; 
         this.frame = 0;
         this.maxFrame = 4;
         this.timeSinceFlap = 0;
@@ -87,14 +87,14 @@ const Canvas = () => {
     class Explosion {
       constructor(x, y, size){
         this.image = new Image();
-        this.image.src = 'prato_explosao.png';
+        this.image.src = '/prato_explosao.png';
         this.spriteWidth = 128;
         this.spriteHeight = 128;
         this.size = size;
         this.x = x;
         this.y = y;
         this.sound = new Audio();
-        this.sound.src = 'plate_shattering.wav';
+        this.sound.src = '/plate_shattering.wav';
         this.frame = 0;
         this.timeSinceLastFrame = 0;
         this.frameInterval = 200;
