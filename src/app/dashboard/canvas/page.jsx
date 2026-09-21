@@ -5,9 +5,7 @@ const Canvas = () => {
   const canvasRef = useRef(null);
   const collisionCanvasRef = useRef(null);
   const STORAGE_KEY = "shooting_game_score";
-  // Estado para forçar a reinicialização do jogo quando o botão for clicado
   const [gameId, setGameId] = useState(0);
-  // Estado para controlar a visibilidade do botão de reiniciar
   const [showRestart, setShowRestart] = useState(false);
 
   useEffect(() => {
@@ -74,7 +72,7 @@ const Canvas = () => {
         if (this.x < 0 - this.width) {
           gameOver = true;
           saveScore();
-          setShowRestart(true); // Mostra o botão ao perder
+          setShowRestart(true); 
         }
       }
       draw() {
@@ -87,14 +85,14 @@ const Canvas = () => {
     class Explosion {
       constructor(x, y, size){
         this.image = new Image();
-        this.image.src = '/prato_explosao.png';
+        this.image.src = '/explosao.png';
         this.spriteWidth = 128;
         this.spriteHeight = 128;
         this.size = size;
         this.x = x;
         this.y = y;
         this.sound = new Audio();
-        this.sound.src = '/plate_shattering.wav';
+        this.sound.src = '/ram.wav';
         this.frame = 0;
         this.timeSinceLastFrame = 0;
         this.frameInterval = 200;
@@ -122,7 +120,7 @@ const Canvas = () => {
     }
 
     function drawGameOver(){
-      ctx.fillStyle = "rgba(110, 228, 110, 0.8)"; // Verde levemente transparente para o fundo
+      ctx.fillStyle = "rgba(110, 228, 110, 0.8)";
       ctx.fillRect(0, 0, canvas.width, canvas.height);
       ctx.textAlign = 'center';
       
@@ -136,7 +134,7 @@ const Canvas = () => {
     }
 
     const handleClick = (e) => {
-      if (gameOver) return; // Impede cliques após o fim do jogo
+      if (gameOver) return;
 
       const rect = canvas.getBoundingClientRect();
       const clickX = e.clientX - rect.left;
@@ -191,12 +189,12 @@ const Canvas = () => {
       window.removeEventListener("click", handleClick);
       cancelAnimationFrame(animationFrameId);
     };
-  }, [gameId]); // Recria o loop inteiro do jogo sempre que o gameId mudar
+  }, [gameId]); 
 
   const handleRestart = () => {
     window.localStorage.setItem(STORAGE_KEY, "0");
     setShowRestart(false);
-    setGameId(prev => prev + 1); // Força o useEffect a rodar do zero
+    setGameId(prev => prev + 1);
   };
 
   return (
@@ -207,7 +205,7 @@ const Canvas = () => {
       {/* Canvas Oculto de Colisão (Invisível mas funcional) */}
       <canvas ref={collisionCanvasRef} style={{ position: "absolute", top: 0, left: 0, opacity: 0, zIndex: 0, pointerEvents: "none" }} />
       
-      {/* Botão de Restart estilizado por cima de tudo */}
+      
       {showRestart && (
         <button 
           onClick={handleRestart}
