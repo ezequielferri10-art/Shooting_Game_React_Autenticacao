@@ -34,8 +34,10 @@ const Canvas = () => {
     let lastTime = 0;
     let alvos = [];
     let explosions = [];
+    let pngs = [];
 
     class Alvo {
+      
       constructor() {
         this.spriteWidth = 128;
         this.spriteHeight = 128;
@@ -48,7 +50,7 @@ const Canvas = () => {
         this.directionY = Math.random() * 4 - 2.5;
         this.markForDeletion = false;
         this.image = new Image();
-        this.image.src = "/babul.png"; 
+        this.image.src = '/babul.png'; 
         this.frame = 0;
         this.maxFrame = 4;
         this.timeSinceFlap = 0;

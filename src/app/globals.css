@@ -12,12 +12,12 @@ body{
   text-align: center;
   display: flex;
   flex-direction: column;
-  min-height: 50vh; /* Ocupa 50% da altura da janela */
+  min-height: 50vh; 
   width: 600px;
   border-radius: 10px;
   margin: 10px auto 20px auto;
   padding: 10px;
-  flex: 1; /* Faz o conteúdo crescer e empurrar o rodapé para baixo */
+  flex: 1; /* Empurra itens do proximo elemento npm ipara baixo */
 }
 .entrar{
   text-align: center;
