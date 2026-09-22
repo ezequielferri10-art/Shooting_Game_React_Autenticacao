@@ -17,7 +17,7 @@ body{
   border-radius: 10px;
   margin: 10px auto 20px auto;
   padding: 10px;
-  flex: 1; /* Empurra itens do proximo elemento npm ipara baixo */
+  flex: 1; /* Empurra itens do proximo elemento para baixo */
 }
 .entrar{
   text-align: center;
