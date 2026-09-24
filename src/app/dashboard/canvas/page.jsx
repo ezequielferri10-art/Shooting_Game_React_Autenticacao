@@ -34,7 +34,7 @@ const Canvas = () => {
     let lastTime = 0;
     let alvos = [];
     let explosions = [];
-    let pngs = [];
+    let pngs = ['/enemy/babul.png', '/enemy/mosca.png', '/enemy/prato_rotacao.png', '/enemy/robocoptero.png', '/enemy/robocoptero2.png'];
 
     class Alvo {
       
@@ -50,7 +50,7 @@ const Canvas = () => {
         this.directionY = Math.random() * 4 - 2.5;
         this.markForDeletion = false;
         this.image = new Image();
-        this.image.src = '/babul.png'; 
+        this.image.src = pngs[Math.floor(Math.random() * pngs.length)]; 
         this.frame = 0;
         this.maxFrame = 4;
         this.timeSinceFlap = 0;
