@@ -27,6 +27,21 @@ const Canvas = () => {
     };
 
     let score = 0;
+    let enemiesDefeated = 0;
+    let stage = 1;
+    const enemiesPerStage = 20;
+    const stageEnemyPngs = [
+      '/enemy/bot1.png',
+      '/enemy/mosca.png',
+      '/enemy/spore1.png',
+      '/enemy/spore2.png',
+      '/enemy/mosca2.png',
+      '/enemy/mosca3.png',
+      '/enemy/robocoptero.png',
+      '/enemy/robocoptero2.png',
+      '/enemy/babul.png',
+      '/enemy/bot1.png',
+    ];
     let gameOver = false;
     ctx.font = "50px Impact";
     let timeToNextAlvo = 0;
@@ -34,8 +49,6 @@ const Canvas = () => {
     let lastTime = 0;
     let alvos = [];
     let explosions = [];
-    let pngs = ['/enemy/babul.png', '/enemy/mosca.png', '/enemy/prato_rotacao.png', '/enemy/robocoptero.png', '/enemy/robocoptero2.png'];
-
     class Alvo {
       
       constructor() {
@@ -46,13 +59,16 @@ const Canvas = () => {
         this.height = this.spriteHeight * this.sizeModifier;
         this.x = canvas.width;
         this.y = Math.random() * (canvas.height - this.height);
-        this.directionX = Math.random() * 4 + 3;
+        this.directionX = (Math.random() * 4 + 3) * (1 + (stage - 1) * 0.1);
         this.directionY = Math.random() * 4 - 2.5;
         this.markForDeletion = false;
         this.image = new Image();
-        this.image.src = pngs[Math.floor(Math.random() * pngs.length)]; 
+        this.maxFrame = 0;
+        this.image.onload = () => {
+          this.maxFrame = Math.max(0, Math.floor(this.image.naturalWidth / this.spriteWidth) - 1);
+        };
+        this.image.src = stageEnemyPngs[stage - 1];
         this.frame = 0;
-        this.maxFrame = 4;
         this.timeSinceFlap = 0;
         this.flapInterval = Math.random() * 80 + 80;
         this.randomColors = [Math.floor(Math.random() * 255), Math.floor(Math.random() * 255), Math.floor(Math.random() * 255)];
@@ -67,7 +83,7 @@ const Canvas = () => {
         if (this.x < 0 - this.width) this.markForDeletion = true;
         this.timeSinceFlap += deltaTime;
         if (this.timeSinceFlap > this.flapInterval) {
-          if (this.frame > this.maxFrame) this.frame = 0;
+          if (this.frame >= this.maxFrame) this.frame = 0;
           else this.frame++;
           this.timeSinceFlap = 0;
         }
@@ -85,11 +101,12 @@ const Canvas = () => {
     }
 
     class Explosion {
-      constructor(x, y, size){
+      constructor(x, y, size, imageSrc = '/explosion14.png', frameCount = 14){
         this.image = new Image();
-        this.image.src = '/explosao.png';
+        this.image.src = imageSrc;
         this.spriteWidth = 128;
         this.spriteHeight = 128;
+        this.frameCount = Math.max(1, Math.floor(frameCount));
         this.size = size;
         this.x = x;
         this.y = y;
@@ -97,7 +114,7 @@ const Canvas = () => {
         this.sound.src = '/ram.wav';
         this.frame = 0;
         this.timeSinceLastFrame = 0;
-        this.frameInterval = 200;
+        this.frameInterval = 100;
         this.markForDeletion = false;
       }
       update(deltaTime){
@@ -106,7 +123,7 @@ const Canvas = () => {
         if (this.timeSinceLastFrame > this.frameInterval){
           this.frame++;
           this.timeSinceLastFrame = 0;
-          if (this.frame > 5) this.markForDeletion = true;
+          if (this.frame >= this.frameCount) this.markForDeletion = true;
         }
       }
       draw(){
@@ -117,8 +134,10 @@ const Canvas = () => {
     function drawScore() {
       ctx.fillStyle = "black";
       ctx.fillText("Score: " + score, 50, 75);
+      ctx.fillText("Stage: " + stage, 50, 135);
       ctx.fillStyle = "white";
       ctx.fillText("Score: " + score, 55, 80);
+      ctx.fillText("Stage: " + stage, 55, 140);
     }
 
     function drawGameOver(){
@@ -145,14 +164,23 @@ const Canvas = () => {
       const detectPixelColor = collisionCtx.getImageData(clickX, clickY, 1, 1);
       const pc = detectPixelColor.data;
 
-      alvos.forEach((object) => {
-        if (object.randomColors[0] === pc[0] && object.randomColors[1] === pc[1] && object.randomColors[2] === pc[2]){
-          object.markForDeletion = true;
-          score++;
-          saveScore();
-          explosions.push(new Explosion(object.x, object.y, object.width));
-        }
-      });
+      const alvoAtingido = alvos.find((object) =>
+        !object.markForDeletion &&
+        object.randomColors[0] === pc[0] &&
+        object.randomColors[1] === pc[1] &&
+        object.randomColors[2] === pc[2]
+      );
+
+      if (alvoAtingido) {
+        alvoAtingido.markForDeletion = true;
+        score += stage;
+        enemiesDefeated++;
+        const previousStage = stage;
+        stage = Math.min(stageEnemyPngs.length, Math.floor(enemiesDefeated / enemiesPerStage) + 1);
+        if (stage !== previousStage) alvos = [];
+        saveScore();
+        explosions.push(new Explosion(alvoAtingido.x, alvoAtingido.y, alvoAtingido.width));
+      }
     };
 
     window.addEventListener("click", handleClick);
