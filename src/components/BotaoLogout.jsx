@@ -15,6 +15,6 @@ export default function BotaoLogout(){
         }
     }
     return(
-        <button onClick={handleLogout}>Sair da conta</button>
+        <button className='sairConta' onClick={handleLogout}>Sair da conta</button>
     )
 }

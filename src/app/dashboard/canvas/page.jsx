@@ -29,7 +29,7 @@ const Canvas = () => {
     let score = 0;
     let enemiesDefeated = 0;
     let stage = 1;
-    const enemiesPerStage = 20;
+    const enemiesPerStage = 5;
     const stageEnemyPngs = [
       '/enemy/bot1.png',
       '/enemy/mosca.png',

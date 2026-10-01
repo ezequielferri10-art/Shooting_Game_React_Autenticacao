@@ -34,16 +34,17 @@ export default function New(){
         }
     }
     return(
-        <div>
+        <div className='new-container'>
+            <br />
             <h3>Adicionar Usuário</h3>
             <div className='novoUsuario'>
                 <p>Nome: <input type="text" id='nome' size='25' value={inputNome} onChange={e => setInputNome(e.target.value)} onKeyUp={handleKeyUp}/></p>
                 <p>Email: <input type="email" id='email' size='25' value={inputEmail} onChange={e => setInputEmail(e.target.value)} onKeyUp={handleKeyUp}/></p>
                 <p>Password: <input type="password" id='password' size='25' value={inputPassword} onChange={e => setInputPassword(e.target.value)} onKeyUp={handleKeyUp}/></p>
             </div>
-            <button onClick={handleButtonClick}>Adicionar</button>
+            <button className='adicionar' onClick={handleButtonClick}>Adicionar</button>
             <br /><br />
-            <Link href='/dashboard/usuarios'><button>Voltar</button></Link>
+            <Link href='/dashboard/usuarios'><button className='voltar'>Voltar</button></Link>
         </div>
     )
 }

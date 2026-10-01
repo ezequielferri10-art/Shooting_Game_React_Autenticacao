@@ -24,11 +24,12 @@ export default function Dashboard() {
 	}, []);
 
 	return (
-		<div>
+		<div className='dashboard-container'>
+			<br />
 			<h1>Bem vindo à sua página!!!</h1>
-			<p>Score atual: {score}</p>
+			<p className='score'>Score atual: {score}</p>
 			<br /><br />
-			<Link href='/dashboard/canvas' target='_blank' rel='noopener noreferrer'><button>Jogar</button></Link>
+			<Link href='/dashboard/canvas' target='_blank' rel='noopener noreferrer'><button className='jogar'>Jogar</button></Link>
 
 			<br /><br />
 			<BotaoLogout />
