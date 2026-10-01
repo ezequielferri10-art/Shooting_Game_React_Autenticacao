@@ -32,7 +32,8 @@ export default function Login() {
         }
     }
     return (
-        <>
+        <div className='login-container'>
+            <br />
             <h2>Login</h2>
             <div className='login'>
                 {falhaLogin
@@ -45,7 +46,7 @@ export default function Login() {
                     </>
                 }
             
-            {falhaLogin && <button onClick={() => setFalhaLogin('')}>Tentar novamente</button>}
+            {falhaLogin && <button className='tentarNovamente' onClick={() => setFalhaLogin('')}>Tentar Novamente</button>}
             <br />
             <Link href='/'><button className='voltar'>Voltar</button></Link>
 </div>
@@ -53,8 +54,8 @@ export default function Login() {
             <br />
             <div className="rodape_reset_senha">
             <h4>Esqueceu senha?</h4>
-            <Link href=''><button>Recuperação de Senha</button></Link>
+            <Link href=''><button className='recuperarSenha'>Recuperação de Senha</button></Link>
             </div>
-        </>
+        </div>
     )
 }

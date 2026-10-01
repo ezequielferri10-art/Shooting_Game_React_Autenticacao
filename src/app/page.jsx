@@ -1,18 +1,25 @@
 import NavBar from "@/components/NavBar";
 import Link from "next/link";
+import styles from "./page.module.css";
 
 export default function Home() {
   return (
-    <div>
-      <NavBar />
-      <br /><br /><br />
-      <h1>Bem vindo!</h1>
-      <h2>Entre em sua conta.</h2>
-      <h3><Link href='/dashboard'><button>Entrar</button></Link></h3>
+    <div className={styles.home}>
       <br />
-      <h2>Ou...</h2>
-      <h2>Cadastre uma nova conta.</h2>
-      <h3><Link href='/new'><button className='voltar'>Cadastrar</button></Link></h3>
+      <h1>Bem vindo!</h1>
+      <h2>Entre em sua conta.
+        <Link href='/dashboard'>
+          <br />
+          <button className={styles.entrar}>Entrar</button>
+        </Link>
+      </h2>
+      <br />
+      <h3>Não tem uma conta?</h3>
+      <h4>Cadastre uma nova conta.
+        <Link href='/new'>
+          <br />
+          <button className={styles.cadastrar}>Cadastrar</button>
+        </Link></h4>
     </div>
   );
 }
