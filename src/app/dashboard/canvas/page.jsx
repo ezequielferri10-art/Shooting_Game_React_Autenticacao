@@ -232,7 +232,7 @@ const Canvas = () => {
       {/* Canvas Principal */}
       <canvas ref={canvasRef} style={{ position: "absolute", top: 0, left: 0, zIndex: 1, display: "block" }} />
       
-      {/* Canvas Oculto de Colisão (Invisível mas funcional) */}
+      {/* Canvas Oculto de Colisão*/}
       <canvas ref={collisionCanvasRef} style={{ position: "absolute", top: 0, left: 0, opacity: 0, zIndex: 0, pointerEvents: "none" }} />
       
       
