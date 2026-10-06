@@ -12,10 +12,24 @@ export default function Login() {
             const response = await api.post('/login', {email, password})
             if (response.status == 200){
                 console.log('Login feito com sucesso! Redirecionando...')
+                console.log('Resposta da API:', response.data);
 
-                //criar cookie local pq o chrome não deixa o localhost acessar o cookie que vem de ads.osorio.ifrs.edu.br - remover se a página for hospedada num servidor
                 const tokenValue = response.data.token || 'usuario_autenticado_remotamente'
                 document.cookie = `token=${tokenValue}; path=/; max-age=86400; SameSite=Lax`
+
+                const nomeUsuario = response.data.nome || response.data.usuario?.nome || response.data.user?.nome;
+                const emailUsuario = response.data.email || response.data.usuario?.email || response.data.user?.email;
+                const idUsuario = response.data._id || response.data.usuario?._id || response.data.user?._id;
+
+                if (nomeUsuario) {
+                    localStorage.setItem('nomeUsuario', nomeUsuario);
+                }
+                if (emailUsuario) {
+                    localStorage.setItem('emailUsuario', emailUsuario);
+                }
+                if (idUsuario) {
+                    localStorage.setItem('idUsuario', idUsuario);
+                }
 
                 window.location.replace('/dashboard')
             }

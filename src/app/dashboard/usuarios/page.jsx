@@ -21,7 +21,7 @@ export default function Usuarios() {
             <ListaUsuarios usuarios={usuarios} />
             <Link href='/dashboard/usuarios/new'><button className='voltar'>Adicionar Usuário</button></Link>
             <br />
-            <Link href='/dashboard'><button className='voltar'>voltar</button></Link>
+            <Link href='/'><button className='voltar'>voltar</button></Link>
         </div>
     )
 }

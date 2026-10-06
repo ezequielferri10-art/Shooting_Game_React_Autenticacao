@@ -300,26 +300,50 @@ a{
 .dashboard-container h1 {
   font-size: 50px;
   color: #1aa7b4;
-  margin-top: 100px;
+  margin-top: 20px;
   margin-bottom: 20px;
 }
 
-.score {
+.SideShot {
+  color: #35da03;
+  margin: 0px;
+  border: #35da03  5px solid;
+  border-radius: 5px;
+  width: 800px;
+  margin-left: auto;
+  margin-right: auto;
+}
+.Invasion{
+  color: #deee04;
+  margin: 0px;
+  border: #deee04  5px solid;
+  border-radius: 5px;
+  width: 800px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.scoreSs {
   font-size: 24px;
-  color: #43a868;
+  color: #35da03;
+  margin: 20px 0;
+}
+.scoreI {
+  font-size: 24px;
+  color: #deee04;
   margin: 20px 0;
 }
 
-.jogar {
+.jogarSs {
   text-align: center;
   align-content: center;
   align-items: center;
   align-self: center;
-  width: 100px;
+  width: 180px;
   font-size: 14px;
   padding: 10px 15px;
   border-radius: 20px;
-  border: 2px solid #43a868;
+  border: 2px solid #35da03;
   background-color: transparent;
   color: white;
   cursor: pointer;
@@ -327,10 +351,48 @@ a{
   margin-top: 15px;
   margin-bottom: 20px;
 }
-
-.jogar:hover {
-  background-color: #43a868;
-  box-shadow: 0 0 10px #43a868;
+.jogarI {
+  text-align: center;
+  align-content: center;
+  align-items: center;
+  align-self: center;
+  width: 180px;
+  font-size: 14px;
+  padding: 10px 15px;
+  border-radius: 20px;
+  border: 2px solid #dfee0abe;
+  background-color: transparent;
+  color: white;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  margin-top: 15px;
+  margin-bottom: 20px;
+}
+.jogarSs:hover {
+  background-color: #35da03;
+  box-shadow: 0 0 10px #35da03;
+}
+.jogarI:hover {
+  background-color: #dfee0abe;
+  box-shadow: 0 0 10px #dfee0abe;
+}
+.SideShot0{
+  color: #35da03;
+  font-size: 36px;
+  margin: 0px;
+}
+.Invasion0{
+  color: #deee04;
+  font-size: 36px;
+  margin: 0px;
+}
+.SideShot1{
+  color: #35da03;
+  font-size: 16px;
+}
+.Invasion1{
+  color: #deee04;
+  font-size: 16px;
 }
 
 .sairConta {

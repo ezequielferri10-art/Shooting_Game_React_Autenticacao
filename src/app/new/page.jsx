@@ -44,7 +44,7 @@ export default function New(){
             </div>
             <button className='adicionar' onClick={handleButtonClick}>Adicionar</button>
             <br /><br />
-            <Link href='/dashboard/usuarios'><button className='voltar'>Voltar</button></Link>
+            <Link href='/'><button className='voltar'>Voltar</button></Link>
         </div>
     )
 }
