@@ -234,7 +234,7 @@ a{
 .new-container h3 {
   font-size: 40px;
   color: #1aa7b4;
-  margin-top: 0px;
+  margin-top: 80px;
   margin-bottom: 20px;
 }
 
@@ -374,7 +374,7 @@ a{
 .Invasion1 {
   min-height: 3em;
   margin: 12px 0 24px;
-  color: rgba(255, 255, 255, 0.8);
+  color: rgba(0, 255, 255, 0.719);
   font-size: 15px;
   line-height: 1.6;
 }
