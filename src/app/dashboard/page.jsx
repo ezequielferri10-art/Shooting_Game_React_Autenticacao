@@ -110,7 +110,7 @@ export default function Dashboard() {
 		<br />		
 		<div className="Invasion">
 			<p className="Invasion0">Invasion</p>
-			<p className="Invasion1">Inimigos aparecem aleatoriamente, pelas bordas da tela, e devem ser abatidos antes alcançar o centro da tela.</p>
+			<p className="Invasion1">Inimigos aparecem aleatoriamente, pelas bordas da tela, e devem ser abatidos antes alcançar o planeta.</p>
 			<Link href='/dashboard/games/invasion/' target='_blank' rel='noopener noreferrer'><button className='jogarI'>Jogar Invasion</button></Link>
 				<p className='scoreI'>Sua maior pontuação no jogo Invasion é: {score2}</p>
 			<br />
