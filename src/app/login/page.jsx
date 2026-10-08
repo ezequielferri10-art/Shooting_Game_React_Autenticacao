@@ -19,7 +19,7 @@ export default function Login() {
 
                 const nomeUsuario = response.data.nome || response.data.usuario?.nome || response.data.user?.nome;
                 const emailUsuario = response.data.email || response.data.usuario?.email || response.data.user?.email;
-                const idUsuario = response.data._id || response.data.usuario?._id || response.data.user?._id;
+                const idUsuario = response.data._id || response.data.id || response.data.usuario?._id || response.data.usuario?.id || response.data.user?._id || response.data.user?.id;
 
                 if (nomeUsuario) {
                     localStorage.setItem('nomeUsuario', nomeUsuario);
@@ -27,8 +27,23 @@ export default function Login() {
                 if (emailUsuario) {
                     localStorage.setItem('emailUsuario', emailUsuario);
                 }
+
                 if (idUsuario) {
-                    localStorage.setItem('idUsuario', idUsuario);
+                    localStorage.setItem('idUsuario', String(idUsuario));
+                } else if (emailUsuario) {
+                    try {
+                        const { data: usuarios } = await api.get('/usuarios');
+                        const usuarioAtual = Array.isArray(usuarios)
+                            ? usuarios.find((usuario) => usuario.email?.toLowerCase() === emailUsuario.toLowerCase())
+                            : null;
+
+                        const idRecuperado = usuarioAtual?._id || usuarioAtual?.id;
+                        if (idRecuperado) {
+                            localStorage.setItem('idUsuario', String(idRecuperado));
+                        }
+                    } catch (error) {
+                        console.warn('Não foi possível recuperar o id do usuário por e-mail:', error);
+                    }
                 }
 
                 window.location.replace('/dashboard')

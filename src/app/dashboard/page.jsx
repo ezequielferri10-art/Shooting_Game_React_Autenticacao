@@ -8,21 +8,34 @@ import api from "@/lib/api";
 const STORAGE_KEY = "shooting_game_score";
 
 export default function Dashboard() {
-	const [score, setScore] = useState(0);
+	const [score1, setScore1] = useState(0);
+	const [score2, setScore2] = useState(0);
 	const [nomeUsuario, setNomeUsuario] = useState("");
 
 	useEffect(() => {
-		const loadScore = () => {
-			const savedScore = window.localStorage.getItem(STORAGE_KEY);
-			setScore(savedScore ? Number(savedScore) : 0);
+		const loadScores = async () => {
+			try {
+				const { data: score1Api } = await api.get('/usuarios/score1');
+				const { data: score2Api } = await api.get('/usuarios/score2');
+
+				setScore1(Number(score1Api ?? 0));
+				setScore2(Number(score2Api ?? 0));
+
+				localStorage.setItem('score1', String(score1Api ?? 0));
+				localStorage.setItem('score2', String(score2Api ?? 0));
+				return;
+			} catch (error) {
+				console.warn('Erro ao buscar scores da API:', error);
+			}
+
+			setScore1(Number(localStorage.getItem('score1') ?? 0));
+			setScore2(Number(localStorage.getItem('score2') ?? 0));
 		};
 
-		loadScore();
-		window.addEventListener("storage", loadScore);
+		loadScores();
+		const intervalId = setInterval(loadScores, 3000);
 
-		return () => {
-			window.removeEventListener("storage", loadScore);
-		};
+		return () => clearInterval(intervalId);
 	}, []);
 
 	useEffect(() => {
@@ -38,9 +51,10 @@ export default function Dashboard() {
 			if (emailUsuario) {
 				try {
 					const { data } = await api.get('/usuarios');
-					const usuarioAtual = Array.isArray(data)
-						? data.find((usuario) => usuario.email?.toLowerCase() === emailUsuario.toLowerCase())
-						: null;
+					const usuarios = Array.isArray(data) ? data : [];
+					const usuarioAtual = usuarios.find((usuario) =>
+						usuario.email?.toLowerCase() === emailUsuario.toLowerCase()
+					);
 
 					if (usuarioAtual?.nome) {
 						setNomeUsuario(usuarioAtual.nome);
@@ -90,7 +104,7 @@ export default function Dashboard() {
 			<p className="SideShot0">SideShot</p>
 			<p className="SideShot1">Inimigos aparecem aleatoriamente, na direita da tela, e devem ser abatidos antes alcançar a borda esquerda da tela.</p>
 			<Link href='/dashboard/games/SideShot/' target='_blank' rel='noopener noreferrer'><button className='jogarSs'>Jogar SideShot</button></Link>
-			<p className='scoreSs'>Sua pontuação atual no jogo SideShot é: {score}</p>
+			<p className='scoreSs'>Sua maior pontuação no jogo SideShot é: {score1}</p>
 			<br />
 		</div>	
 		<br />		
@@ -98,7 +112,7 @@ export default function Dashboard() {
 			<p className="Invasion0">Invasion</p>
 			<p className="Invasion1">Inimigos aparecem aleatoriamente, pelas bordas da tela, e devem ser abatidos antes alcançar o centro da tela.</p>
 			<Link href='/dashboard/games/invasion/' target='_blank' rel='noopener noreferrer'><button className='jogarI'>Jogar Invasion</button></Link>
-				<p className='scoreI'>Sua pontuação atual no jogo Invasion é: {score}</p>
+				<p className='scoreI'>Sua maior pontuação no jogo Invasion é: {score2}</p>
 			<br />
 		</div>
 			<BotaoLogout />

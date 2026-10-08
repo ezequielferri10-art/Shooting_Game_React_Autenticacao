@@ -1,4 +1,5 @@
 'use client'
+import api from '@/lib/api';
 import { useEffect, useRef, useState } from "react";
 
 const Canvas = () => {
@@ -15,6 +16,27 @@ const Canvas = () => {
 
     const ctx = canvas.getContext("2d");
     const collisionCtx = collisionCanvas.getContext('2d', { willReadFrequently: true });
+    let scoreJaSincronizado = false;
+
+    const syncHighScore = async (valorAtual) => {
+      const valor = Number(valorAtual);
+      if (!Number.isFinite(valor) || valor <= 0) return;
+
+      try {
+        const { data: scoreSalvoNaApi } = await api.get('/usuarios/score1');
+        const scoreAtualNaApi = Number(scoreSalvoNaApi ?? 0);
+
+        if (valor <= scoreAtualNaApi) {
+          return;
+        }
+
+        await api.patch('/usuarios/score1', { score1: valor });
+        localStorage.setItem('score1', String(valor));
+        console.log('score1 atualizado na API com sucesso:', valor);
+      } catch (error) {
+        console.error('Erro ao comparar e atualizar score1 na API:', error.response?.data?.message || error.message);
+      }
+    };
 
     // Ajusta o tamanho dinamicamente para a tela inteira
     canvas.width = window.innerWidth;
@@ -210,6 +232,9 @@ const Canvas = () => {
         animationFrameId = requestAnimationFrame(animate);
       } else {
         drawGameOver();
+        if (!scoreJaSincronizado) {
+          syncHighScore(score);
+        }
       }
     }
     
@@ -229,13 +254,8 @@ const Canvas = () => {
 
   return (
     <div style={{ position: "relative", width: "100vw", height: "100vh", overflow: "hidden", backgroundColor: "#1a1a1a" }}>
-      {/* Canvas Principal */}
       <canvas ref={canvasRef} style={{ position: "absolute", top: 0, left: 0, zIndex: 1, display: "block" }} />
-      
-      {/* Canvas Oculto de Colisão*/}
       <canvas ref={collisionCanvasRef} style={{ position: "absolute", top: 0, left: 0, opacity: 0, zIndex: 0, pointerEvents: "none" }} />
-      
-      
       {showRestart && (
         <button 
           onClick={handleRestart}
