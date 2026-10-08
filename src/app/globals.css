@@ -39,7 +39,7 @@ table{
   margin-right: auto;
 }
 td,th{
-  border: 1px solid white;
+  border: 2px solid white;
   padding: 5px 15px 5px 15px;
 }
 .remover{
@@ -251,7 +251,7 @@ a{
   padding: 10px 12px;
   margin: 8px 0;
   border-radius: 5px;
-  border: 1px solid var(--cor-bordas);
+  border: 2px solid var(--cor-bordas);
   background-color: rgba(51, 51, 51, 0.9);
   color: white;
   font-size: 14px;
@@ -288,118 +288,202 @@ a{
 }
 
 .dashboard-container {
-  background-image: url('/background/background3.jpg');
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 28px;
+  width: 100%;
+  height: 100vh;
+  min-height: 100vh;
+  overflow-y: auto;
+  padding: clamp(24px, 5vh, 56px) 24px 32px;
+  background-image: linear-gradient(rgba(10, 16, 30, 0.68), rgba(10, 16, 30, 0.82)), url('/background/background3.jpg');
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
-  width: 100%;
-  height: 100%;
-  min-height: 100vh;
 }
 
-.dashboard-container h1 {
-  font-size: 50px;
-  color: #1aa7b4;
-  margin-top: 20px;
-  margin-bottom: 20px;
+.dashboard-header {
+  text-align: center;
+}
+
+.dashboard-eyebrow {
+  margin: 0 0 8px;
+  color: #59d4dd;
+  font-size: 80px;
+  font-weight: 700;
+  padding: 10px 10px;
+  
+}
+
+.dashboard-header h1 {
+  margin: 0;
+  color: #fff;
+  font-size: clamp(38px, 6vw, 56px);
+  line-height: 1.1;
+  text-shadow: 0 4px 24px rgba(0, 0, 0, 0.45);
+}
+
+.dashboard-welcome {
+  margin: 12px 0 0;
+  color: rgba(52, 78, 224, 0.82);
+  font-size: 25px;
+  padding: 10px 10px;
+}
+
+.dashboard-games {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 24px;
+  width: min(100%, 1040px);
 }
 
 .SideShot {
-  color: #35da03;
-  margin: 0px;
-  border: #35da03  5px solid;
-  border-radius: 5px;
-  width: 800px;
-  margin-left: auto;
-  margin-right: auto;
-}
-.Invasion{
-  color: #deee04;
-  margin: 0px;
-  border: #deee04  5px solid;
-  border-radius: 5px;
-  width: 800px;
-  margin-left: auto;
-  margin-right: auto;
+  --game-accent: #6de84b;
 }
 
-.scoreSs {
-  font-size: 24px;
-  color: #35da03;
-  margin: 20px 0;
+.Invasion {
+  --game-accent: #eff309;
 }
+
+.SideShot,
+.Invasion {
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  min-width: 0;
+  padding: 28px;
+  border: 5px solid color-mix(in srgb, var(--game-accent) 58%, transparent);
+  border-radius: 18px;
+  background: rgba(12, 20, 31, 0.82);
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.26);
+  text-align: left;
+}
+
+.SideShot0,
+.Invasion0 {
+  margin: 0;
+  color: var(--game-accent);
+  font-size: 32px;
+  font-weight: 700;
+}
+
+.SideShot1,
+.Invasion1 {
+  min-height: 3em;
+  margin: 12px 0 24px;
+  color: rgba(255, 255, 255, 0.8);
+  font-size: 15px;
+  line-height: 1.6;
+}
+
+.scoreSs,
 .scoreI {
-  font-size: 24px;
-  color: #deee04;
-  margin: 20px 0;
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 12px;
+  width: 100%;
+  margin: 0 0 22px;
+  padding-top: 16px;
+  border-top: 2px solid rgba(255, 255, 255, 0.14);
+  color: var(--game-accent);
+  font-size: 18px;
 }
 
-.jogarSs {
-  text-align: center;
-  align-content: center;
-  align-items: center;
-  align-self: center;
-  width: 180px;
-  font-size: 14px;
-  padding: 10px 15px;
-  border-radius: 20px;
-  border: 2px solid #35da03;
-  background-color: transparent;
-  color: white;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  margin-top: 15px;
-  margin-bottom: 20px;
+.scoreSs strong,
+.scoreI strong {
+  color: var(--game-accent);
+  font-size: 36px;
 }
+
+.jogarSs,
 .jogarI {
-  text-align: center;
-  align-content: center;
+  display: inline-flex;
   align-items: center;
-  align-self: center;
-  width: 180px;
-  font-size: 14px;
-  padding: 10px 15px;
-  border-radius: 20px;
-  border: 2px solid #dfee0abe;
-  background-color: transparent;
+  justify-content: center;
+  min-height: 44px;
+  margin-top: auto;
+  padding: 0 20px;
+  border: 2px solid var(--game-accent);
+  border-radius: 999px;
+  background: transparent;
   color: white;
   cursor: pointer;
-  transition: all 0.3s ease;
-  margin-top: 15px;
-  margin-bottom: 20px;
+  font-size: 14px;
+  font-weight: 600;
+  text-decoration: none;
+  transition: background-color 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease;
 }
+
 .jogarSs:hover {
-  background-color: #35da03;
-  box-shadow: 0 0 10px #35da03;
+  background: #35da03;
+  box-shadow: 0 0 18px rgba(53, 218, 3, 0.35);
+  transform: translateY(-1px);
 }
+
 .jogarI:hover {
-  background-color: #dfee0abe;
-  box-shadow: 0 0 10px #dfee0abe;
+  background: #d5d809;
+  box-shadow: 0 0 18px rgba(227, 233, 91, 0.3);
+  transform: translateY(-1px);
 }
-.SideShot0{
-  color: #35da03;
-  font-size: 36px;
-  margin: 0px;
+
+.jogarSs:focus-visible,
+.jogarI:focus-visible,
+.dashboard-actions a:focus-visible,
+.dashboard-actions button:focus-visible {
+  outline: 3px solid white;
+  outline-offset: 3px;
 }
-.Invasion0{
-  color: #deee04;
-  font-size: 36px;
-  margin: 0px;
+
+.dashboard-actions {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  margin-top: auto;
 }
-.SideShot1{
-  color: #35da03;
-  font-size: 16px;
+
+.dashboard-actions .sairConta,
+.dashboard-actions .voltar {
+  box-sizing: border-box;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 40px;
+  margin: 0;
+  text-decoration: none;
 }
-.Invasion1{
-  color: #deee04;
-  font-size: 16px;
+
+@media (max-width: 700px) {
+  .dashboard-container {
+    gap: 22px;
+    padding: 32px 16px 24px;
+  }
+
+  .dashboard-games {
+    grid-template-columns: 2fr;
+    gap: 16px;
+    max-width: 520px;
+  }
+
+  .SideShot,
+  .Invasion {
+    padding: 22px;
+  }
+
+  .SideShot1,
+  .Invasion1 {
+    min-height: 0;
+  }
 }
-.jogarI{
-  border: 2px solid #deee04;
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  translate: -50% -50%;
+
+@media (max-width: 380px) {
+  .dashboard-actions {
+    flex-direction: column;
+  }
 }
 
 .sairConta {

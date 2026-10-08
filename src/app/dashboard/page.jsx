@@ -95,29 +95,38 @@ export default function Dashboard() {
 	}, []);
 
 	return (
-		<div className='dashboard-container'>
-			<br />
-			<h1>Game Center</h1>
-			<h1>Bem vindo à sua página, {nomeUsuario || "usuário"}!</h1>
-			<br />
-		<div className="SideShot">
-			<p className="SideShot0">SideShot</p>
-			<p className="SideShot1">Inimigos aparecem aleatoriamente, na direita da tela, e devem ser abatidos antes alcançar a borda esquerda da tela.</p>
-			<Link href='/dashboard/games/SideShot/' target='_blank' rel='noopener noreferrer'><button className='jogarSs'>Jogar SideShot</button></Link>
-			<p className='scoreSs'>Sua pontuação atual no jogo SideShot é: {score}</p>
-			<br />
-		</div>	
-		<br />		
-		<div className="Invasion">
-			<p className="Invasion0">Invasion</p>
-			<p className="Invasion1">Inimigos aparecem aleatoriamente, pelas bordas da tela, e devem ser abatidos antes alcançar o centro da tela.</p>
-			<Link href='/dashboard/games/invasion/' target='_blank' rel='noopener noreferrer'><button className='jogarI'>Jogar Invasion</button></Link>
-				<p className='scoreI'>Sua pontuação atual no jogo Invasion é: {score}</p>
-			<br />
-		</div>
-			<BotaoLogout />
-			<br />
-			<Link href='/'><button className='voltar'>Voltar</button></Link>
-		</div>
+		<main className='dashboard-container'>
+			<header className='dashboard-header'>
+				<p className='dashboard-eyebrow'>Game Center</p>
+				
+				<p className='dashboard-welcome'>Bem-vindo(a), {nomeUsuario || "jogador"}!</p>
+			</header>
+
+			<section className='dashboard-games' aria-label='Seus jogos'>
+				<article className='SideShot'>
+					<p className='SideShot0'>SideShot</p>
+					<p className='SideShot1'>Inimigos aparecem pela direita. Abata-os antes que alcancem a borda esquerda.</p>
+					<p className='scoreSs'>Sua pontuação máxima atual no jogo é:<strong>{score1}</strong></p>
+					<Link href='/dashboard/games/SideShot/' target='_blank' rel='noopener noreferrer' className='jogarSs'>
+						Jogar SideShot
+					</Link>
+				</article>
+
+				<article className='Invasion'>
+					<p className='Invasion0'>Invasion</p>
+					<p className='Invasion1'>Inimigos aparecem pelas bordas. Abata-os antes que alcancem o centro da tela.</p>
+					<p className='scoreI'>Sua pontuação máxima atual no jogo é:<strong>{score2}</strong></p>
+					<Link href='/dashboard/games/invasion/' target='_blank' rel='noopener noreferrer' className='jogarI'>
+						Jogar Invasion
+					</Link>
+				</article>
+			</section>
+
+			<Link href='/' className='voltar'>Voltar</Link>
+
+			<footer className='dashboard-actions'>
+				<BotaoLogout />
+			</footer>
+		</main>
 	);
 }
