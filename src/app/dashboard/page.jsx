@@ -104,15 +104,15 @@ export default function Dashboard() {
 			<p className="SideShot0">SideShot</p>
 			<p className="SideShot1">Inimigos aparecem aleatoriamente, na direita da tela, e devem ser abatidos antes alcançar a borda esquerda da tela.</p>
 			<Link href='/dashboard/games/SideShot/' target='_blank' rel='noopener noreferrer'><button className='jogarSs'>Jogar SideShot</button></Link>
-			<p className='scoreSs'>Sua maior pontuação no jogo SideShot é: {score1}</p>
+			<p className='scoreSs'>Sua pontuação atual no jogo SideShot é: {score}</p>
 			<br />
 		</div>	
 		<br />		
 		<div className="Invasion">
 			<p className="Invasion0">Invasion</p>
-			<p className="Invasion1">Inimigos aparecem aleatoriamente, pelas bordas da tela, e devem ser abatidos antes alcançar o planeta.</p>
+			<p className="Invasion1">Inimigos aparecem aleatoriamente, pelas bordas da tela, e devem ser abatidos antes alcançar o centro da tela.</p>
 			<Link href='/dashboard/games/invasion/' target='_blank' rel='noopener noreferrer'><button className='jogarI'>Jogar Invasion</button></Link>
-				<p className='scoreI'>Sua maior pontuação no jogo Invasion é: {score2}</p>
+				<p className='scoreI'>Sua pontuação atual no jogo Invasion é: {score}</p>
 			<br />
 		</div>
 			<BotaoLogout />

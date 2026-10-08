@@ -394,6 +394,13 @@ a{
   color: #deee04;
   font-size: 16px;
 }
+.jogarI{
+  border: 2px solid #deee04;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  translate: -50% -50%;
+}
 
 .sairConta {
   text-align: center;
