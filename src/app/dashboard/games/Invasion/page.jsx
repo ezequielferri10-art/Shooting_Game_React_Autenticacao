@@ -613,7 +613,7 @@ export default function InvasionGamePage() {
             onClick={handleRestart}
             className="reiniciarJogo"
           >
-            Reiniciar
+            Reiniciar o Jogo
           </button>
         </div>
       )}
