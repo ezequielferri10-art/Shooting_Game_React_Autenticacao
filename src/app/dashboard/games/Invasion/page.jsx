@@ -1,6 +1,6 @@
 ﻿"use client";
 import api from "@/lib/api";
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 
 const ASSET_PATHS = {
   planet: "/assets/misc/invasion/planet2.png",
@@ -305,16 +305,18 @@ class Game {
     this.createEnemyPool();
     this.enemyPool[0].start();
     this.enemyTimer = 0;
-    this.enemyInterval = 1200;
+    this.enemyInterval = 800;
     this.spriteUpdate = false;
     this.spriteTimer = 0;
     this.spriteInterval = 150;
     this.score = 0;
-    this.winningScore = 50;
+    this.winningScore = 20;
     this.lives = 10;
     this.mouse = { x: 0, y: 0 };
     this.gameOver = false;
     this.scoreSaved = false;
+    this.gameOverHandled = false;
+    this.onGameOver = null;
 
     this.syncHighScore = async (valorAtual) => {
       const valor = Number(valorAtual);
@@ -406,6 +408,13 @@ class Game {
 
     if (this.score >= this.winningScore || this.lives < 1) {
       this.gameOver = true;
+      this.enemyPool.forEach((enemy) => {
+        enemy.reset();
+      });
+      if (!this.gameOverHandled) {
+        this.gameOverHandled = true;
+        if (this.onGameOver) this.onGameOver();
+      }
       if (!this.scoreSaved) {
         this.scoreSaved = true;
         this.syncHighScore(this.score);
@@ -500,6 +509,8 @@ export default function InvasionGamePage() {
   const canvasRef = useRef(null);
   const animationFrameRef = useRef(null);
   const gameRef = useRef(null);
+  const [showRestart, setShowRestart] = useState(false);
+  const [restartKey, setRestartKey] = useState(0);
 
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -530,6 +541,7 @@ export default function InvasionGamePage() {
         if (!isMounted) return;
 
         const game = new Game(canvas, images);
+        game.onGameOver = () => setShowRestart(true);
         gameRef.current = game;
 
         let lastTime = 0;
@@ -564,19 +576,52 @@ export default function InvasionGamePage() {
         gameRef.current.destroy();
       }
     };
-  }, []);
+  }, [restartKey]);
+
+  const handleRestart = () => {
+    setShowRestart(false);
+    setRestartKey((value) => value + 1);
+  };
 
   return (
-    <canvas
-      id="canvas1"
-      ref={canvasRef}
-      className="invasion-canvas"
-      style={{
-        backgroundImage: 'url("/assets/background/invasion/space_background1.png")',
-        backgroundSize: 'cover',
-        backgroundPosition: 'center',
-        backgroundRepeat: 'no-repeat',
-      }}
-    />
+    <div style={{ position: 'relative', width: 800, height: 800, margin: '0 auto' }}>
+      <canvas
+        id="canvas1"
+        ref={canvasRef}
+        className="invasion-canvas"
+        style={{
+          backgroundImage: 'url("/assets/background/invasion/space_background1.png")',
+          backgroundSize: 'cover',
+          backgroundPosition: 'center',
+          backgroundRepeat: 'no-repeat',
+        }}
+      />
+
+      {showRestart && (
+        <div
+          style={{
+            position: 'absolute',
+            inset: 0,
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            background: 'rgba(0, 0, 0, 0.45)',
+          }}
+        >
+          <button
+            type="button"
+            onClick={handleRestart}
+            className="reiniciarJogo"
+          >
+            Reiniciar
+          </button>
+        </div>
+      )}
+    </div>
   );
 }
+
+
+
+
+
