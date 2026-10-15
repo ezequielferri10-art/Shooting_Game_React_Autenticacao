@@ -51,7 +51,8 @@ const Canvas = () => {
     let score = 0;
     let enemiesDefeated = 0;
     let stage = 1;
-    const enemiesPerStage = 5;
+    let difficultyStage = 1;
+    const enemiesPerStage = 1;
     const stageEnemyPngs = [
       '/assets/enemy/sideshot/mosca.png',
       '/assets/enemy/sideshot/mosca2.png',
@@ -63,6 +64,11 @@ const Canvas = () => {
       '/assets/enemy/sideshot/babul.png',
       '/assets/enemy/sideshot/bot1.png',
     ];
+    const stageBackgrounds = stageEnemyPngs.map((_, index) => {
+      const background = new Image();
+      background.src = `/assets/background/sideshot/ss_background${String(index + 1).padStart(3, '0')}.png`;
+      return background;
+    });
     let gameOver = false;
     ctx.font = "50px Impact";
     let timeToNextAlvo = 0;
@@ -80,7 +86,7 @@ const Canvas = () => {
         this.height = this.spriteHeight * this.sizeModifier;
         this.x = canvas.width;
         this.y = Math.random() * (canvas.height - this.height);
-        this.directionX = (Math.random() * 4 + 3) * (1 + (stage - 1) * 0.1);
+        this.directionX = (Math.random() * 4 + 3) * (1 + (difficultyStage - 1) * 0.1);
         this.directionY = Math.random() * 4 - 2.5;
         this.markForDeletion = false;
         this.image = new Image();
@@ -161,6 +167,13 @@ const Canvas = () => {
       ctx.fillText("Stage: " + stage, 55, 140);
     }
 
+    function drawBackground() {
+      const background = stageBackgrounds[stage - 1];
+      if (background?.complete && background.naturalWidth > 0) {
+        ctx.drawImage(background, 0, 0, canvas.width, canvas.height);
+      }
+    }
+
     function drawGameOver(){
       ctx.fillStyle = "rgba(110, 228, 110, 0.8)";
       ctx.fillRect(0, 0, canvas.width, canvas.height);
@@ -197,7 +210,8 @@ const Canvas = () => {
         score += stage;
         enemiesDefeated++;
         const previousStage = stage;
-        stage = Math.min(stageEnemyPngs.length, Math.floor(enemiesDefeated / enemiesPerStage) + 1);
+        difficultyStage = Math.floor(enemiesDefeated / enemiesPerStage) + 1;
+        stage = ((difficultyStage - 1) % stageEnemyPngs.length) + 1;
         if (stage !== previousStage) alvos = [];
         saveScore();
         explosions.push(new Explosion(alvoAtingido.x, alvoAtingido.y, alvoAtingido.width));
@@ -210,6 +224,7 @@ const Canvas = () => {
     function animate(timestamp) {
       ctx.clearRect(0, 0, canvas.width, canvas.height);
       collisionCtx.clearRect(0, 0, canvas.width, canvas.height);
+      drawBackground();
       let deltaTime = timestamp - lastTime;
       lastTime = timestamp;
       timeToNextAlvo += deltaTime;
