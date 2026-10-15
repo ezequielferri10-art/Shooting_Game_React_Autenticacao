@@ -116,7 +116,7 @@ export default function Dashboard() {
 					<p className='Invasion0'>Invasion</p>
 					<p className='Invasion1'>Inimigos aparecem pelas bordas. Abata-os antes que alcancem o centro da tela.</p>
 					<p className='scoreI'>Sua pontuação máxima atual no jogo é:<strong>{score2}</strong></p>
-					<Link href='/dashboard/games/invasion/' target='_blank' rel='noopener noreferrer' className='jogarI'>
+					<Link href='/dashboard/games/Invasion/' target='_blank' rel='noopener noreferrer' className='jogarI'>
 						Jogar Invasion
 					</Link>
 				</article>

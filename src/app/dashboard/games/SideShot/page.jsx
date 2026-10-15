@@ -53,16 +53,16 @@ const Canvas = () => {
     let stage = 1;
     const enemiesPerStage = 5;
     const stageEnemyPngs = [
-      '/enemy/bot1.png',
-      '/enemy/mosca.png',
-      '/enemy/spore1.png',
-      '/enemy/spore2.png',
-      '/enemy/mosca2.png',
-      '/enemy/mosca3.png',
-      '/enemy/robocoptero.png',
-      '/enemy/robocoptero2.png',
-      '/enemy/babul.png',
-      '/enemy/bot1.png',
+      '/assets/enemy/sideshot/bot1.png',
+      '/assets/enemy/sideshot/mosca.png',
+      '/assets/enemy/sideshot/spore1.png',
+      '/assets/enemy/sideshot/spore2.png',
+      '/assets/enemy/sideshot/mosca2.png',
+      '/assets/enemy/sideshot/mosca3.png',
+      '/assets/enemy/sideshot/robocoptero.png',
+      '/assets/enemy/sideshot/robocoptero2.png',
+      '/assets/enemy/sideshot/babul.png',
+      '/assets/enemy/sideshot/bot1.png',
     ];
     let gameOver = false;
     ctx.font = "50px Impact";
@@ -123,7 +123,7 @@ const Canvas = () => {
     }
 
     class Explosion {
-      constructor(x, y, size, imageSrc = '/explosion14.png', frameCount = 14){
+      constructor(x, y, size, imageSrc = '/assets/misc/sideshot/explosion14.png', frameCount = 14){
         this.image = new Image();
         this.image.src = imageSrc;
         this.spriteWidth = 128;
@@ -133,7 +133,7 @@ const Canvas = () => {
         this.x = x;
         this.y = y;
         this.sound = new Audio();
-        this.sound.src = '/ram.wav';
+        this.sound.src = '/assets/misc/sideshot/ram.wav';
         this.frame = 0;
         this.timeSinceLastFrame = 0;
         this.frameInterval = 100;
