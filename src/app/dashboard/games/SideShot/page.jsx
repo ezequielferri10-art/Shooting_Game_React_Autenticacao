@@ -53,14 +53,13 @@ const Canvas = () => {
     let stage = 1;
     const enemiesPerStage = 5;
     const stageEnemyPngs = [
-      '/assets/enemy/sideshot/bot1.png',
       '/assets/enemy/sideshot/mosca.png',
-      '/assets/enemy/sideshot/spore1.png',
-      '/assets/enemy/sideshot/spore2.png',
       '/assets/enemy/sideshot/mosca2.png',
       '/assets/enemy/sideshot/mosca3.png',
       '/assets/enemy/sideshot/robocoptero.png',
       '/assets/enemy/sideshot/robocoptero2.png',
+      '/assets/enemy/sideshot/spore1.png',
+      '/assets/enemy/sideshot/spore2.png',
       '/assets/enemy/sideshot/babul.png',
       '/assets/enemy/sideshot/bot1.png',
     ];
