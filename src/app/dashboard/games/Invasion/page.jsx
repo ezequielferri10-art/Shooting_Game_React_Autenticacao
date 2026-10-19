@@ -5,10 +5,10 @@ import { useEffect, useRef, useState } from "react";
 const ASSET_PATHS = {
   planet: "/assets/misc/invasion/planet2.png",
   player: "/assets/misc/invasion/player.png",
-  asteroid: "/assets/enemy/invader/asteroid.png",
-  lobstermorph: "/assets/enemy/invader/lobstermorph.png",
-  beetlemorph: "/assets/enemy/invader/beetlemorph.png",
-  rhinomorph: "/assets/enemy/invader/rhinomorph.png",
+  enemy001: "/assets/enemy/invader/enemy001.png",
+  enemy002: "/assets/enemy/invader/enemy002.png",
+  enemy003: "/assets/enemy/invader/enemy003.png",
+  enemy004: "/assets/enemy/invader/enemy004.png",
   space_background1: "/assets/background/invasion/space_background1.png",
 };
 
@@ -44,7 +44,7 @@ class Player {
     this.game = game;
     this.x = this.game.width * 0.5;
     this.y = this.game.height * 0.5;
-    this.radius = 40;
+    this.radius = 20;
     this.image = this.game.images.player;
     this.aim;
     this.angle = 0;
@@ -54,7 +54,7 @@ class Player {
     context.save();
     context.translate(this.x, this.y);
     context.rotate(this.angle);
-    context.drawImage(this.image, -this.radius, -this.radius);
+    context.drawImage(this.image, -this.radius + 10, -this.radius);
     if (this.game.debug) {
       context.beginPath();
       context.arc(0, 0, this.radius, 0, Math.PI * 2);
@@ -239,10 +239,10 @@ class Enemy {
   }
 }
 
-class Asteroid extends Enemy {
+class Enemy001 extends Enemy {
   constructor(game) {
     super(game);
-    this.image = game.images.asteroid;
+    this.image = game.images.enemy001;
     this.frameX = 0;
     this.frameY = Math.floor(Math.random() * 4);
     this.maxFrame = 7;
@@ -251,10 +251,10 @@ class Asteroid extends Enemy {
   }
 }
 
-class Beetlemorph extends Enemy {
+class Enemy002 extends Enemy {
   constructor(game) {
     super(game);
-    this.image = game.images.beetlemorph;
+    this.image = game.images.enemy002;
     this.frameX = 0;
     this.frameY = Math.floor(Math.random() * 4);
     this.maxFrame = 3;
@@ -263,10 +263,10 @@ class Beetlemorph extends Enemy {
   }
 }
 
-class Rhinomorph extends Enemy {
+class Enemy003 extends Enemy {
   constructor(game) {
     super(game);
-    this.image = game.images.rhinomorph;
+    this.image = game.images.enemy003;
     this.frameX = 0;
     this.frameY = Math.floor(Math.random() * 4);
     this.maxFrame = 6;
@@ -275,10 +275,10 @@ class Rhinomorph extends Enemy {
   }
 }
 
-class Lobstermorph extends Enemy {
+class Enemy004 extends Enemy {
   constructor(game) {
     super(game);
-    this.image = game.images.lobstermorph;
+    this.image = game.images.enemy004;
     this.frameX = 0;
     this.frameY = Math.floor(Math.random() * 4);
     this.maxFrame = 14;
@@ -487,13 +487,13 @@ class Game {
     for (let i = 0; i < this.numberOfEnemy; i++) {
       const randomNumber = Math.random();
       if (randomNumber < 0.25) {
-        this.enemyPool.push(new Asteroid(this));
+        this.enemyPool.push(new Enemy001(this));
       } else if (randomNumber < 0.5) {
-        this.enemyPool.push(new Beetlemorph(this));
+        this.enemyPool.push(new Enemy002(this));
       } else if (randomNumber < 0.75) {
-        this.enemyPool.push(new Rhinomorph(this));
+        this.enemyPool.push(new Enemy003(this));
       } else {
-        this.enemyPool.push(new Lobstermorph(this));
+        this.enemyPool.push(new Enemy004(this));
       }
     }
   }
@@ -620,7 +620,6 @@ export default function InvasionGamePage() {
     </div>
   );
 }
-
 
 
 
