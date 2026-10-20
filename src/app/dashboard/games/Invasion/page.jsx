@@ -71,6 +71,8 @@ class Player {
   }
 
   shoot() {
+    if (this.game.gameOver) return;
+
     const bullet = this.game.getBullet();
     if (bullet) {
       bullet.start(
@@ -79,6 +81,10 @@ class Player {
         this.aim[0],
         this.aim[1]
       );
+      this.game.shootSound.currentTime = 0;
+      this.game.shootSound.play().catch((error) => {
+        console.error("Erro ao reproduzir som do disparo:", error);
+      });
     }
   }
 }
@@ -212,12 +218,14 @@ class Enemy {
         this.speedY = 0;
         this.collided = true;
         this.game.lives--;
+        this.game.playImpactSound();
       }
 
       if (this.game.checkCollision(this, this.game.player) && this.lives >= 1) {
         this.lives = 0;
         this.collided = true;
         this.game.lives--;
+        this.game.playImpactSound();
       }
 
       this.game.bulletsPool.forEach((bullet) => {
@@ -257,7 +265,7 @@ class Enemy002 extends Enemy {
     this.image = game.images.enemy002;
     this.frameX = 0;
     this.frameY = Math.floor(Math.random() * 4);
-    this.maxFrame = 10;
+    this.maxFrame = 7;
     this.lives = 4;
     this.maxLives = this.lives;
   }
@@ -269,8 +277,8 @@ class Enemy003 extends Enemy {
     this.image = game.images.enemy003;
     this.frameX = 0;
     this.frameY = Math.floor(Math.random() * 4);
-    this.maxFrame = 3;
-    this.lives = 2;
+    this.maxFrame = 5;
+    this.lives = 3;
     this.maxLives = this.lives;
   }
 }
@@ -282,7 +290,7 @@ class Enemy004 extends Enemy {
     this.frameX = 0;
     this.frameY = Math.floor(Math.random() * 4);
     this.maxFrame = 5;
-    this.lives = 4;
+    this.lives = 2;
     this.maxLives = this.lives;
   }
 }
@@ -294,6 +302,8 @@ class Game {
     this.backgroundImage = images.space_background1;
     this.width = this.canvas.width;
     this.height = this.canvas.height;
+    this.shootSound = new Audio("/assets/misc/invasion/beam_shot.wav");
+    this.impactSound = new Audio("/assets/misc/invasion/impact.wav");
     this.planet = new Planet(this);
     this.player = new Player(this);
     this.debug = false;
@@ -314,9 +324,20 @@ class Game {
     this.lives = 10;
     this.mouse = { x: 0, y: 0 };
     this.gameOver = false;
+    this.hasUserInteracted = false;
     this.scoreSaved = false;
     this.gameOverHandled = false;
     this.onGameOver = null;
+
+    this.playImpactSound = () => {
+      if (!this.hasUserInteracted) return;
+
+      const sound = this.impactSound.cloneNode();
+      sound.currentTime = 0;
+      sound.play().catch((error) => {
+        console.error("Erro ao reproduzir som de impacto:", error);
+      });
+    };
 
     this.syncHighScore = async (valorAtual) => {
       const valor = Number(valorAtual);
@@ -346,6 +367,7 @@ class Game {
     };
 
     this.handleMouseDown = (event) => {
+      this.hasUserInteracted = true;
       const rect = this.canvas.getBoundingClientRect();
       this.mouse.x = event.clientX - rect.left;
       this.mouse.y = event.clientY - rect.top;
@@ -353,6 +375,7 @@ class Game {
     };
 
     this.handleKeyUp = (event) => {
+      this.hasUserInteracted = true;
       if (event.key === 'd') this.debug = !this.debug;
       else if (event.key === '1') this.player.shoot();
     };
@@ -620,7 +643,3 @@ export default function InvasionGamePage() {
     </div>
   );
 }
-
-
-
-

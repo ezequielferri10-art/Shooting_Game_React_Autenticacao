@@ -271,36 +271,19 @@ const Canvas = () => {
       <canvas ref={canvasRef} style={{ position: "absolute", top: 0, left: 0, zIndex: 1, display: "block" }} />
       <canvas ref={collisionCanvasRef} style={{ position: "absolute", top: 0, left: 0, opacity: 0, zIndex: 0, pointerEvents: "none" }} />
       {showRestart && (
-        <button 
+        <button
+          type="button"
           onClick={handleRestart}
+          className="reiniciarJogo"
           style={{
             position: "absolute",
             top: "80%",
             left: "50%",
             transform: "translate(-50%, -50%)",
-            zIndex: 10,
-            padding: "15px 40px",
-            fontSize: "24px",
-            fontFamily: "Impact, sans-serif",
-            letterSpacing: "2px",
-            backgroundColor: "#8a6006",
-            color: "white",
-            border: "4px solid black",
-            borderRadius: "10px",
-            cursor: "pointer",
-            boxShadow: "0px 5px 0px 0px #000",
-            transition: "all 0.1s ease"
-          }}
-          onMouseDown={(e) => {
-            e.currentTarget.style.transform = "translate(-50%, -46%)";
-            e.currentTarget.style.boxShadow = "0px 2px 0px 0px #000";
-          }}
-          onMouseUp={(e) => {
-            e.currentTarget.style.transform = "translate(-50%, -50%)";
-            e.currentTarget.style.boxShadow = "0px 5px 0px 0px #000";
+            zIndex: 10
           }}
         >
-          RESTART GAME
+          Restart Game
         </button>
       )}
     </div>
