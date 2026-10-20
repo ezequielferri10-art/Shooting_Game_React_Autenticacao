@@ -5,10 +5,10 @@ import { useEffect, useRef, useState } from "react";
 const ASSET_PATHS = {
   planet: "/assets/misc/invasion/planet2.png",
   player: "/assets/misc/invasion/player.png",
-  enemy001: "/assets/enemy/invader/enemy001.png",
-  enemy002: "/assets/enemy/invader/enemy002.png",
-  enemy003: "/assets/enemy/invader/enemy003.png",
-  enemy004: "/assets/enemy/invader/enemy004.png",
+  enemy001: "/assets/enemy/invader/enemy001_40.png",
+  enemy002: "/assets/enemy/invader/enemy002_40.png",
+  enemy003: "/assets/enemy/invader/enemy003_40.png",
+  enemy004: "/assets/enemy/invader/enemy004_40.png",
   space_background1: "/assets/background/invasion/space_background1.png",
 };
 
@@ -133,7 +133,7 @@ class Enemy {
     this.game = game;
     this.x = 0;
     this.y = 0;
-    this.radius = 40;
+    this.radius = 20;
     this.width = this.radius * 2;
     this.height = this.radius * 2;
     this.speedX = 0;
@@ -257,8 +257,8 @@ class Enemy002 extends Enemy {
     this.image = game.images.enemy002;
     this.frameX = 0;
     this.frameY = Math.floor(Math.random() * 4);
-    this.maxFrame = 3;
-    this.lives = 1;
+    this.maxFrame = 10;
+    this.lives = 4;
     this.maxLives = this.lives;
   }
 }
@@ -269,8 +269,8 @@ class Enemy003 extends Enemy {
     this.image = game.images.enemy003;
     this.frameX = 0;
     this.frameY = Math.floor(Math.random() * 4);
-    this.maxFrame = 6;
-    this.lives = 4;
+    this.maxFrame = 3;
+    this.lives = 2;
     this.maxLives = this.lives;
   }
 }
@@ -281,8 +281,8 @@ class Enemy004 extends Enemy {
     this.image = game.images.enemy004;
     this.frameX = 0;
     this.frameY = Math.floor(Math.random() * 4);
-    this.maxFrame = 14;
-    this.lives = 8;
+    this.maxFrame = 5;
+    this.lives = 4;
     this.maxLives = this.lives;
   }
 }
