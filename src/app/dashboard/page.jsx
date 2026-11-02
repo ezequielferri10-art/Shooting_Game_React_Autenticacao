@@ -4,6 +4,7 @@ import BotaoLogout from "@/components/BotaoLogout";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import api from "@/lib/api";
+import AlteraPassword from "@/components/AlteraPassword";
 
 const STORAGE_KEY = "shooting_game_score";
 
@@ -123,7 +124,7 @@ export default function Dashboard() {
 			</section>
 
 			<Link href='/' className='voltar'>Voltar</Link>
-
+						
 			<footer className='dashboard-actions'>
 				<BotaoLogout />
 			</footer>

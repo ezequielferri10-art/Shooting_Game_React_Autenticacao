@@ -344,7 +344,7 @@ a{
 }
 
 .Invasion {
-  --game-accent: #eff309;
+  --game-accent: #f2f532ea;
 }
 
 .SideShot,
@@ -355,7 +355,7 @@ a{
   align-items: flex-start;
   min-width: 0;
   padding: 28px;
-  border: 5px solid color-mix(in srgb, var(--game-accent) 58%, transparent);
+  border: 5px solid color-mix(in srgb, var(--game-accent) 90%, transparent);
   border-radius: 18px;
   background: rgba(12, 20, 31, 0.82);
   box-shadow: 0 16px 40px rgba(0, 0, 0, 0.26);
@@ -426,7 +426,7 @@ a{
 
 .jogarI:hover {
   background: #d5d809;
-  box-shadow: 0 0 18px rgba(227, 233, 91, 0.3);
+  box-shadow: 0 0 18px rgba(230, 240, 54, 0.836);
   transform: translateY(-1px);
 }
 

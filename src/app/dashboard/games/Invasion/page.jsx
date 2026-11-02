@@ -614,14 +614,14 @@ export default function InvasionGamePage() {
         display: "flex",
         justifyContent: "center",
         alignItems: "center",
-        // ADICIONADO: Define a imagem de fundo para toda a área preenchendo a tela
+        // Define a imagem de fundo para toda a área preenchendo a tela
         backgroundImage: `url(${ASSET_PATHS.space_background2})`,
         backgroundSize: "cover",
         backgroundPosition: "center",
         overflow: "hidden",
-        backgroundColor: "#000" // Cor de segurança caso a imagem falhe
+        backgroundColor: "#000"
       }}>
-    <div style={{ position: 'relative', width: 800, height: 800, margin: '0 auto' }}>
+    <div style={{ position: 'relative', border: '3px solid white', width: 800, height: 800, margin: '0 auto' }}>
       <canvas
         id="canvas1"
         ref={canvasRef}
