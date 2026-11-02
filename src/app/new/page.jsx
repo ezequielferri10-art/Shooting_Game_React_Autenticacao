@@ -2,6 +2,7 @@
 import api from "@/lib/api"
 import Link from "next/link"
 import { useState } from "react"
+import validator from "validator"
 
 export default function New(){
     const [inputNome, setInputNome] = useState('')
@@ -10,17 +11,32 @@ export default function New(){
     const [mensagemErro, setMensagemErro] = useState('')
 
     async function handleButtonClick(){
+        // Reseta o estado de erro ao tentar enviar novamente
+        setMensagemErro('')
+        
         const nome = inputNome.trim()
         const email = inputEmail.trim()
         const password = inputPassword.trim()
 
+        //Validação de campos vazios
         if(!nome || !email || !password){
             alert('Por favor, preencha todos os campos!')
             return
         }
 
+        //Validação do formato do e-mail usando o validator
+        if (!validator.isEmail(email)) {
+            alert('Por favor, insira um e-mail válido!')
+            setMensagemErro('O formato do e-mail digitado é inválido.\nExemplo: usuario@provedor.com')
+            return
+        }
+
+        //Normaliza o e-mail (remove espaços extras, converte para minúsculas)
+        const emailNormalizado = validator.normalizeEmail(email) || email
+
         try{
-            const response = await api.post('/usuarios', {nome, email, senha: password})
+            // Enviando o e-mail já normalizado e validado para a API
+            const response = await api.post('/usuarios', {nome, email: emailNormalizado, senha: password})
             if (response.status == 201){
                 window.location.replace('/dashboard/usuarios')
             }

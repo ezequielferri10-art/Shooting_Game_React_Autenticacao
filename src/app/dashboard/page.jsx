@@ -105,7 +105,7 @@ export default function Dashboard() {
 			<section className='dashboard-games' aria-label='Seus jogos'>
 				<article className='SideShot'>
 					<p className='SideShot0'>SideShot</p>
-					<p className='SideShot1'>Inimigos aparecem pela direita. Abata-os antes que alcancem a borda esquerda.</p>
+					<p className='SideShot1'>O objetivo do jogo é abater inimigor, a cada fase, e obter o mair número de pontos possível.<br></br> Inimigos aparecem à direita da tela.<br></br> Abata-os antes que alcancem a borda esquerda.</p>
 					<p className='scoreSs'>Sua pontuação máxima atual no jogo é:<strong>{score1}</strong></p>
 					<Link href='/dashboard/games/SideShot/' target='_blank' rel='noopener noreferrer' className='jogarSs'>
 						Jogar SideShot
@@ -114,7 +114,7 @@ export default function Dashboard() {
 
 				<article className='Invasion'>
 					<p className='Invasion0'>Invasion</p>
-					<p className='Invasion1'>Inimigos estão vindo de todos os cantos da galáxia. Impeça-os de chegar ao planeta e invadi-lo.</p>
+					<p className='Invasion1'>Inimigos, vindos de vários cantos da galáxia, se aproximam para atacar o planeta.<br></br>Impeça-os!!</p>
 					<p className='scoreI'>Sua pontuação máxima atual no jogo é:<strong>{score2}</strong></p>
 					<Link href='/dashboard/games/Invasion/' target='_blank' rel='noopener noreferrer' className='jogarI'>
 						Jogar Invasion

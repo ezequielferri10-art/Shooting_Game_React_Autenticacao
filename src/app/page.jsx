@@ -1,4 +1,3 @@
-import NavBar from "@/components/NavBar";
 import Link from "next/link";
 import styles from "./page.module.css";
 
@@ -6,7 +5,7 @@ export default function Home() {
   return (
     <div className={styles.home}>
       <br />
-      <h1>Bem vindo!</h1>
+      <h1>Bem vindo à Game Center!</h1>
       <h2>Entre em sua conta.
         <Link href='/dashboard'>
           <br />
@@ -15,7 +14,7 @@ export default function Home() {
       </h2>
       <br />
       <h3>Não tem uma conta?</h3>
-      <h4>Cadastre uma nova conta.
+      <h4>Cadastre-se!
         <Link href='/new'>
           <br />
           <button className={styles.cadastrar}>Cadastrar</button>

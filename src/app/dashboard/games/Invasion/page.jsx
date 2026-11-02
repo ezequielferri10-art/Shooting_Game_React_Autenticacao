@@ -10,6 +10,7 @@ const ASSET_PATHS = {
   enemy003: "/assets/enemy/invader/enemy003_40.png",
   enemy004: "/assets/enemy/invader/enemy004_40.png",
   space_background1: "/assets/background/invasion/space_background1.png",
+  space_background2: "/assets/background/invasion/space_background2.png",
 };
 
 const loadImage = (src) =>
@@ -607,6 +608,19 @@ export default function InvasionGamePage() {
   };
 
   return (
+    <div style={{
+        width: "100vw",
+        height: "100vh",
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+        // ADICIONADO: Define a imagem de fundo para toda a área preenchendo a tela
+        backgroundImage: `url(${ASSET_PATHS.space_background2})`,
+        backgroundSize: "cover",
+        backgroundPosition: "center",
+        overflow: "hidden",
+        backgroundColor: "#000" // Cor de segurança caso a imagem falhe
+      }}>
     <div style={{ position: 'relative', width: 800, height: 800, margin: '0 auto' }}>
       <canvas
         id="canvas1"
@@ -640,6 +654,7 @@ export default function InvasionGamePage() {
           </button>
         </div>
       )}
+    </div>
     </div>
   );
 }
