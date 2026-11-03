@@ -88,16 +88,37 @@ class Player {
       });
     }
   }
+    shoot2() {
+    if (this.game.gameOver) return;
+
+    const bullet2 = this.game.getBullet2();
+    if (bullet2) {
+      bullet2.start(
+        this.x + this.radius * this.aim[0],
+        this.y + this.radius * this.aim[1],
+        this.aim[0],
+        this.aim[1]
+      );
+      this.game.shoot2Sound.currentTime = 0;
+      this.game.shoot2Sound.play().catch((error) => {
+        console.error("Erro ao reproduzir som do disparo:", error);
+      });
+    }
+  }
 }
 
 class Bullet {
   constructor(game) {
     this.game = game;
-    this.radius = 5;
+    this.radius = 16;
+    this.width = 16;
+    this.height = 16;
     this.speedX = 1;
     this.speedY = 1;
     this.speedModifier = 5;
     this.free = true;
+    this.image = new Image();
+    this.image.src = '/assets/misc/invasion/fire.png';
   }
 
   start(x, y, speedX, speedY) {
@@ -115,10 +136,67 @@ class Bullet {
   draw(context) {
     if (!this.free) {
       context.save();
-      context.beginPath();
-      context.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
-      context.fillStyle = "green";
-      context.fill();
+      context.drawImage(
+        this.image, 
+        this.x - this.width / 2, 
+        this.y - this.height / 2, 
+        this.width, 
+        this.height
+      );
+      
+      context.restore();
+    }
+  }
+
+  update() {
+    if (!this.free) {
+      this.x += this.speedX;
+      this.y += this.speedY;
+    }
+
+    if (this.x < 0 || this.x > this.game.width || this.y < 0 || this.y > this.game.height) {
+      this.reset();
+    }
+  }
+}
+
+class Bullet2 {
+  constructor(game) {
+    this.game = game;
+    this.radius = 16;
+    this.width = 16;
+    this.height = 16;
+    this.speedX = 1;
+    this.speedY = 1;
+    this.speedModifier = 5;
+    this.free = true;
+    this.image = new Image();
+    this.image.src = '/assets/misc/invasion/fire2.png';
+  }
+
+  start(x, y, speedX, speedY) {
+    this.free = false;
+    this.x = x;
+    this.y = y;
+    this.speedX = speedX * this.speedModifier;
+    this.speedY = speedY * this.speedModifier;
+  }
+
+  reset() {
+    this.free = true;
+  }
+
+  draw(context) {
+    if (!this.free) {
+      context.save();
+      context.drawImage(
+        this.image, 
+        this.x - this.width / 2, 
+        this.y - this.height / 2, 
+        this.width, 
+        this.height
+      );
+      
       context.restore();
     }
   }
@@ -236,6 +314,13 @@ class Enemy {
         }
       });
 
+      this.game.bulletsPool2.forEach((bullet2) => {
+        if (!bullet2.free && this.game.checkCollision(this, bullet2) && this.lives >= 1) {
+          bullet2.reset();
+          this.hit(2);
+        }
+      });
+
       if (this.lives < 1 && this.game.spriteUpdate) {
         this.frameX++;
       }
@@ -304,13 +389,17 @@ class Game {
     this.width = this.canvas.width;
     this.height = this.canvas.height;
     this.shootSound = new Audio("/assets/misc/invasion/beam_shot.wav");
+    this.shoot2Sound = new Audio("/assets/misc/invasion/beam_shot2.wav");
     this.impactSound = new Audio("/assets/misc/invasion/impact.wav");
     this.planet = new Planet(this);
     this.player = new Player(this);
     this.debug = false;
     this.bulletsPool = [];
+    this.bulletsPool2 = [];
     this.numberOfBullets = 15;
+    this.numberOfBullets2 = 2;
     this.createBulletsPool();
+    this.createBulletsPool2();
     this.enemyPool = [];
     this.numberOfEnemy = 20;
     this.createEnemyPool();
@@ -373,12 +462,14 @@ class Game {
       this.mouse.x = event.clientX - rect.left;
       this.mouse.y = event.clientY - rect.top;
       this.player.shoot();
+      this.player.shoot2();
     };
 
     this.handleKeyUp = (event) => {
       this.hasUserInteracted = true;
       if (event.key === 'd') this.debug = !this.debug;
       else if (event.key === '1') this.player.shoot();
+      else if (event.key === '2') this.player.shoot2();
     };
 
     window.addEventListener('mousemove', this.handleMouseMove);
@@ -405,6 +496,11 @@ class Game {
     this.bulletsPool.forEach((bullet) => {
       bullet.draw(context);
       bullet.update();
+    });
+
+      this.bulletsPool2.forEach((bullet2) => {
+      bullet2.draw(context);
+      bullet2.update();
     });
 
     this.enemyPool.forEach((enemy) => {
@@ -501,9 +597,21 @@ class Game {
     }
   }
 
+    createBulletsPool2() {
+    for (let i = 0; i < this.numberOfBullets2; i++) {
+      this.bulletsPool2.push(new Bullet2(this));
+    }
+  }
+
   getBullet() {
     for (let i = 0; i < this.bulletsPool.length; i++) {
       if (this.bulletsPool[i].free) return this.bulletsPool[i];
+    }
+  }
+
+  getBullet2() {
+    for (let i = 0; i < this.bulletsPool2.length; i++) {
+      if (this.bulletsPool2[i].free) return this.bulletsPool2[i];
     }
   }
 
