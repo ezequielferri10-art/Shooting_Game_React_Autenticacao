@@ -52,7 +52,7 @@ const Canvas = () => {
     let enemiesDefeated = 0;
     let stage = 1;
     let difficultyStage = 1;
-    const enemiesPerStage = 1;
+    const enemiesPerStage = 20;
     const stageEnemyPngs = [
       '/assets/enemy/sideshot/mosca.png',
       '/assets/enemy/sideshot/mosca2.png',
@@ -71,8 +71,8 @@ const Canvas = () => {
     });
     let gameOver = false;
     ctx.font = "50px Impact";
-    let timeToNextAlvo = 0;
-    let alvoInterval = 500;
+    let timeToNextAlvo = 200;
+    let alvoInterval = 800;
     let lastTime = 0;
     let alvos = [];
     let explosions = [];

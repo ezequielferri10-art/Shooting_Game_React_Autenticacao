@@ -110,15 +110,23 @@ class Player {
 class Bullet {
   constructor(game) {
     this.game = game;
-    this.radius = 16;
-    this.width = 16;
-    this.height = 16;
+    this.radius = 20;
+    this.width = 20; 
+    this.height = 20;
+    this.frameX = 0;
+    this.maxFrame = 4;
+    this.fps = 20;
+    this.frameInterval = 1000 / this.fps;
+    this.frameTimer = 0;
+
     this.speedX = 1;
     this.speedY = 1;
     this.speedModifier = 5;
     this.free = true;
+    this.angle = 0;
+    
     this.image = new Image();
-    this.image.src = '/assets/misc/invasion/fire.png';
+    this.image.src = '/assets/misc/invasion/fire1_1.png';
   }
 
   start(x, y, speedX, speedY) {
@@ -127,6 +135,9 @@ class Bullet {
     this.y = y;
     this.speedX = speedX * this.speedModifier;
     this.speedY = speedY * this.speedModifier;
+    this.angle = Math.atan2(this.speedY, this.speedX);
+    this.frameX = 0;
+    this.frameTimer = 0;
   }
 
   reset() {
@@ -136,22 +147,33 @@ class Bullet {
   draw(context) {
     if (!this.free) {
       context.save();
+      context.translate(this.x, this.y);
+      context.rotate(this.angle);
       context.drawImage(
-        this.image, 
-        this.x - this.width / 2, 
-        this.y - this.height / 2, 
-        this.width, 
-        this.height
+        this.image,
+        this.frameX * this.width, 0,
+        this.width, this.height,
+        -this.width / 2, -this.height / 2,
+        this.width, this.height
       );
-      
       context.restore();
     }
   }
 
-  update() {
+  update(deltaTime = 16) {
     if (!this.free) {
       this.x += this.speedX;
       this.y += this.speedY;
+      if (this.frameTimer > this.frameInterval) {
+        if (this.frameX < this.maxFrame) {
+          this.frameX++;
+        } else {
+          this.frameX = 0;
+        }
+        this.frameTimer = 0;
+      } else {
+        this.frameTimer += deltaTime;
+      }
     }
 
     if (this.x < 0 || this.x > this.game.width || this.y < 0 || this.y > this.game.height) {
@@ -163,15 +185,21 @@ class Bullet {
 class Bullet2 {
   constructor(game) {
     this.game = game;
-    this.radius = 16;
-    this.width = 16;
-    this.height = 16;
-    this.speedX = 1;
-    this.speedY = 1;
-    this.speedModifier = 5;
+    this.radius = 20;
+    this.width = 20; 
+    this.height = 20;
+    this.frameX = 0;
+    this.maxFrame = 2;
+    this.fps = 20;
+    this.frameInterval = 20 / this.fps;
+    this.frameTimer = 0;
+    this.speedX = 2;
+    this.speedY = 2;
+    this.speedModifier = 3;
     this.free = true;
+    this.angle = 0;
     this.image = new Image();
-    this.image.src = '/assets/misc/invasion/fire2.png';
+    this.image.src = '/assets/misc/invasion/fire2_1.png';
   }
 
   start(x, y, speedX, speedY) {
@@ -180,6 +208,9 @@ class Bullet2 {
     this.y = y;
     this.speedX = speedX * this.speedModifier;
     this.speedY = speedY * this.speedModifier;
+    this.angle = Math.atan2(this.speedY, this.speedX);
+    this.frameX = 0;
+    this.frameTimer = 0;
   }
 
   reset() {
@@ -189,22 +220,33 @@ class Bullet2 {
   draw(context) {
     if (!this.free) {
       context.save();
+      context.translate(this.x, this.y);
+      context.rotate(this.angle);
       context.drawImage(
-        this.image, 
-        this.x - this.width / 2, 
-        this.y - this.height / 2, 
-        this.width, 
-        this.height
+        this.image,
+        this.frameX * this.width, 0,
+        this.width, this.height,
+        -this.width / 2, -this.height / 2, 
+        this.width, this.height 
       );
-      
       context.restore();
     }
   }
 
-  update() {
+  update(deltaTime = 16) {
     if (!this.free) {
       this.x += this.speedX;
       this.y += this.speedY;
+      if (this.frameTimer > this.frameInterval) {
+        if (this.frameX < this.maxFrame) {
+          this.frameX++;
+        } else {
+          this.frameX = 0;
+        }
+        this.frameTimer = 0;
+      } else {
+        this.frameTimer += deltaTime;
+      }
     }
 
     if (this.x < 0 || this.x > this.game.width || this.y < 0 || this.y > this.game.height) {
@@ -388,29 +430,29 @@ class Game {
     this.backgroundImage = images.space_background1;
     this.width = this.canvas.width;
     this.height = this.canvas.height;
-    this.shootSound = new Audio("/assets/misc/invasion/beam_shot.wav");
-    this.shoot2Sound = new Audio("/assets/misc/invasion/beam_shot2.wav");
+    this.shootSound = new Audio("/assets/misc/invasion/fire1_1.wav");
+    this.shoot2Sound = new Audio("/assets/misc/invasion/fire2_1.wav");
     this.impactSound = new Audio("/assets/misc/invasion/impact.wav");
     this.planet = new Planet(this);
     this.player = new Player(this);
     this.debug = false;
     this.bulletsPool = [];
     this.bulletsPool2 = [];
-    this.numberOfBullets = 15;
-    this.numberOfBullets2 = 2;
+    this.numberOfBullets = 15; //Número máximo do tiro 1 na tela
+    this.numberOfBullets2 = 2; //Número máximo do tiro 2 na tela
     this.createBulletsPool();
     this.createBulletsPool2();
     this.enemyPool = [];
-    this.numberOfEnemy = 20;
+    this.numberOfEnemy = 15;
     this.createEnemyPool();
     this.enemyPool[0].start();
     this.enemyTimer = 0;
-    this.enemyInterval = 800;
+    this.enemyInterval = 500;
     this.spriteUpdate = false;
     this.spriteTimer = 0;
     this.spriteInterval = 150;
     this.score = 0;
-    this.winningScore = 20;
+    this.winningScore = Infinity;
     this.lives = 10;
     this.mouse = { x: 0, y: 0 };
     this.gameOver = false;
@@ -462,7 +504,6 @@ class Game {
       this.mouse.x = event.clientX - rect.left;
       this.mouse.y = event.clientY - rect.top;
       this.player.shoot();
-      this.player.shoot2();
     };
 
     this.handleKeyUp = (event) => {

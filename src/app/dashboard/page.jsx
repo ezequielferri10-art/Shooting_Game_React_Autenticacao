@@ -6,8 +6,6 @@ import { useEffect, useState } from "react";
 import api from "@/lib/api";
 import AlteraPassword from "@/components/AlteraPassword";
 
-const STORAGE_KEY = "shooting_game_score";
-
 export default function Dashboard() {
 	const [score1, setScore1] = useState(0);
 	const [score2, setScore2] = useState(0);
@@ -124,6 +122,7 @@ export default function Dashboard() {
 			</section>
 
 			<Link href='/' className='voltar'>Voltar</Link>
+			<Link href='altPass/' className='altPass'>Alterar Password</Link>
 						
 			<footer className='dashboard-actions'>
 				<BotaoLogout />
