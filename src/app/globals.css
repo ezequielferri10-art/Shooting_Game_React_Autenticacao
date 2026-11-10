@@ -1,4 +1,8 @@
-:root {--cor-bordas: #1aa7b4;}
+:root {
+        --cor-bordas: #1aa7b4;
+        --cor-sombra: #12f325;
+        --cor-txt-hover: rgb(34, 33, 33);
+      }
 
 html,
 body {
@@ -151,6 +155,7 @@ a{
 .entrar:hover {
   background-color: #2ddb16;
   box-shadow: 0 0 10px #46f523;
+  color: black;
 }
 
 .voltar {
@@ -172,7 +177,31 @@ a{
 .voltar:hover {
   background-color: #eea70d;
   border-color: #eea70d;
-  box-shadow: 0 0 10px #eea70d;
+  box-shadow: 0 0 10px var(--cor-sombra);
+  color: var(--cor-txt-hover);
+}
+
+.altDados {
+  display: inline-flex; 
+  justify-content: center;
+  align-items: center;
+  width: 120px;
+  font-size: 12px;
+  padding: 8px 12px;
+  margin-top: 20px;
+  border: 2px solid #f3ef12;
+  border-radius: 15px;
+  background-color: transparent;
+  color: white;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.altDados:hover {
+  background-color: #f3ef12;
+  border-color: #f3ef12;
+  box-shadow: 0 0 10px var(--cor-sombra);
+  color: var(--cor-txt-hover);
 }
 
 
@@ -194,8 +223,9 @@ a{
 
 .altPass:hover {
   background-color: #ccee0de7;
-  box-shadow: 0 0 10px #ccee0d;
   border: 2px solid #d2e622;
+  box-shadow: 0 0 10px var(--cor-sombra);
+  color: var(--cor-txt-hover);
 }
 
 .recuperarSenha {
@@ -217,8 +247,8 @@ a{
 
 .recuperarSenha:hover {
   background-color: #f4d03f;
-  box-shadow: 0 0 10px #f4d03f;
-  color: #333;
+  box-shadow: 0 0 10px var(--cor-sombra);
+  color: var(--cor-txt-hover);
 }
 
 .tentarNovamente {
@@ -240,7 +270,8 @@ a{
 
 .tentarNovamente:hover {
   background-color: #e74c3c;
-  box-shadow: 0 0 10px #e74c3c;
+  box-shadow: 0 0 10px var(--cor-sombra);
+  color: var(--cor-txt-hover);
 }
 
 .new-container {
@@ -284,7 +315,7 @@ a{
 
 .novoUsuario input:focus {
   outline: none;
-  box-shadow: 0 0 8px var(--cor-bordas);
+  
 }
 
 .adicionar {
@@ -306,7 +337,8 @@ a{
 
 .adicionar:hover {
   background-color: #2ddb16;
-  box-shadow: 0 0 10px #46f523;
+  box-shadow: 0 0 10px var(--cor-sombra);
+  color: var(--cor-txt-hover)
 }
 
 .dashboard-container {
@@ -442,14 +474,16 @@ a{
 
 .jogarSs:hover {
   background: #35da03;
-  box-shadow: 0 0 18px rgba(53, 218, 3, 0.35);
+  box-shadow: 0 0 18px var(--cor-sombra);
   transform: translateY(-1px);
+  color: var(--cor-txt-hover);
 }
 
 .jogarI:hover {
   background: #d5d809;
-  box-shadow: 0 0 18px rgba(230, 240, 54, 0.836);
+  box-shadow: 0 0 18px var(--cor-sombra);
   transform: translateY(-1px);
+  color: var(--cor-txt-hover);
 }
 
 .jogarSs:focus-visible,
@@ -526,8 +560,9 @@ a{
 }
 
 .sairConta:hover {
-  background-color: #e92b09be;
-  box-shadow: 0 0 10px #ff4f30;
+  background-color: #fa3030be;
+  box-shadow: 0 0 10px var(--cor-sombra);
+  color: var(--cor-txt-hover);
 }
 
 .reiniciarJogo {
@@ -549,7 +584,7 @@ a{
 
 .reiniciarJogo:hover {
   background-color: #eff309;
-  box-shadow: 0 0 10px rgba(239, 243, 9, 0.8);
-  color: #1b1b1b;
+  box-shadow: 0 0 10px var(--cor-sombra);
+  color: var(--cor-txt-hover);
 }
 

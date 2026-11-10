@@ -122,7 +122,7 @@ export default function Dashboard() {
 			</section>
 
 			<Link href='/' className='voltar'>Voltar</Link>
-			<Link href='altPass/' className='altPass'>Alterar Password</Link>
+			<Link href='/dashboard/usuario' className='altPass'>Gerenciar Conta</Link>
 						
 			<footer className='dashboard-actions'>
 				<BotaoLogout />

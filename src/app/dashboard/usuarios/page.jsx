@@ -5,23 +5,34 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 
 export default function Usuarios() {
-    const [usuarios, setUsuarios] = useState({})
+    const [usuarios, setUsuarios] = useState([])
+
     async function getUsuarios() {
-        const { data } = await api.get('/usuarios')
-        setUsuarios(data)
-        console.log(data)
+        try {
+            const { data } = await api.get('/usuarios')
+            setUsuarios(Array.isArray(data) ? data : [])
+        } catch (error) {
+            console.error('Erro ao carregar usuários:', {
+                status: error?.response?.status,
+                data: error?.response?.data,
+                message: error?.message,
+            })
+            setUsuarios([])
+        }
     }
+
     useEffect(() => {
         getUsuarios()
     }, [])
 
     return (
         <div>
-            <h1>Gerenciar Usuários</h1>
+            <h1>Gerenciar Conta</h1>
             <ListaUsuarios usuarios={usuarios} />
-            <Link href='/dashboard/usuarios/new'><button className='voltar'>Adicionar Usuário</button></Link>
+
+            <Link href='/dashboard/usuario' className='altDados'>Alterar Dados</Link>
             <br />
-            <Link href='/'><button className='voltar'>voltar</button></Link>
+            <Link href='/dashboard' className='voltar'>Voltar</Link>
         </div>
     )
 }
