@@ -72,7 +72,7 @@ class Player {
   }
 
   shoot() {
-    if (this.game.gameOver) return;
+    if (this.game.gameOver || !this.game.started) return;
 
     const bullet = this.game.getBullet();
     if (bullet) {
@@ -88,8 +88,8 @@ class Player {
       });
     }
   }
-    shoot2() {
-    if (this.game.gameOver) return;
+  shoot2() {
+    if (this.game.gameOver || !this.game.started) return;
 
     const bullet2 = this.game.getBullet2();
     if (bullet2) {
@@ -456,6 +456,7 @@ class Game {
     this.lives = 10;
     this.mouse = { x: 0, y: 0 };
     this.gameOver = false;
+    this.started = false;
     this.hasUserInteracted = false;
     this.scoreSaved = false;
     this.gameOverHandled = false;
@@ -499,6 +500,11 @@ class Game {
     };
 
     this.handleMouseDown = (event) => {
+      if (!this.started) {
+        this.start();
+        return;
+      }
+
       this.hasUserInteracted = true;
       const rect = this.canvas.getBoundingClientRect();
       this.mouse.x = event.clientX - rect.left;
@@ -507,6 +513,11 @@ class Game {
     };
 
     this.handleKeyUp = (event) => {
+      if (!this.started) {
+        this.start();
+        return;
+      }
+
       this.hasUserInteracted = true;
       if (event.key === 'd') this.debug = !this.debug;
       else if (event.key === '1') this.player.shoot();
@@ -524,9 +535,26 @@ class Game {
     window.removeEventListener('keyup', this.handleKeyUp);
   }
 
+  start() {
+    this.hasUserInteracted = true;
+    this.started = true;
+  }
+
   render(context, deltaTime) {
     if (this.backgroundImage) {
       context.drawImage(this.backgroundImage, 0, 0, this.width, this.height);
+    }
+
+    if (!this.started) {
+      this.planet.draw(context);
+      this.player.update();
+      this.player.draw(context);
+      context.save();
+      context.textAlign = 'center';
+      context.font = '32px Helvetica';
+      context.fillText('Clique ou pressione uma tecla para iniciar', this.width * 0.5, this.height * 0.85);
+      context.restore();
+      return;
     }
 
     this.planet.draw(context);

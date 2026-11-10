@@ -70,6 +70,7 @@ const Canvas = () => {
       return background;
     });
     let gameOver = false;
+    let gameStarted = false;
     ctx.font = "50px Impact";
     let timeToNextAlvo = 200;
     let alvoInterval = 800;
@@ -175,7 +176,7 @@ const Canvas = () => {
     }
 
     function drawGameOver(){
-      ctx.fillStyle = "rgba(110, 228, 110, 0.8)";
+      ctx.fillStyle = "rgba(98, 125, 245, 0.8)";
       ctx.fillRect(0, 0, canvas.width, canvas.height);
       ctx.textAlign = 'center';
       
@@ -188,8 +189,16 @@ const Canvas = () => {
       ctx.fillText('Your score is: ' + score, canvas.width/2 + 5, canvas.height/2 + 55);
     }
 
+    function startGame() {
+      gameStarted = true;
+    }
+
     const handleClick = (e) => {
       if (gameOver) return;
+      if (!gameStarted) {
+        startGame();
+        return;
+      }
 
       const rect = canvas.getBoundingClientRect();
       const clickX = e.clientX - rect.left;
@@ -218,7 +227,12 @@ const Canvas = () => {
       }
     };
 
+    const handleKeyDown = () => {
+      if (!gameOver && !gameStarted) startGame();
+    };
+
     window.addEventListener("click", handleClick);
+    window.addEventListener("keydown", handleKeyDown);
 
     let animationFrameId;
     function animate(timestamp) {
@@ -227,20 +241,27 @@ const Canvas = () => {
       drawBackground();
       let deltaTime = timestamp - lastTime;
       lastTime = timestamp;
-      timeToNextAlvo += deltaTime;
 
-      if (timeToNextAlvo > alvoInterval) {
-        alvos.push(new Alvo());
-        timeToNextAlvo = 0;
-        alvos.sort((a, b) => a.width - b.width);
+      if (gameStarted) {
+        timeToNextAlvo += deltaTime;
+
+        if (timeToNextAlvo > alvoInterval) {
+          alvos.push(new Alvo());
+          timeToNextAlvo = 0;
+          alvos.sort((a, b) => a.width - b.width);
+        }
+
+        drawScore();
+        [...alvos, ...explosions].forEach(object => object.update(deltaTime));
+        [...alvos, ...explosions].forEach(object => object.draw());
+
+        alvos = alvos.filter((object) => !object.markForDeletion);
+        explosions = explosions.filter((object) => !object.markForDeletion);
+      } else {
+        ctx.fillStyle = "white";
+        ctx.textAlign = "center";
+        ctx.fillText("Clique ou pressione uma tecla para iniciar", canvas.width / 2, canvas.height * 0.85);
       }
-
-      drawScore();
-      [...alvos, ...explosions].forEach(object => object.update(deltaTime));
-      [...alvos, ...explosions].forEach(object => object.draw());
-
-      alvos = alvos.filter((object) => !object.markForDeletion);
-      explosions = explosions.filter((object) => !object.markForDeletion);
 
       if (!gameOver) {
         animationFrameId = requestAnimationFrame(animate);
@@ -256,6 +277,7 @@ const Canvas = () => {
 
     return () => {
       window.removeEventListener("click", handleClick);
+      window.removeEventListener("keydown", handleKeyDown);
       cancelAnimationFrame(animationFrameId);
     };
   }, [gameId]); 
