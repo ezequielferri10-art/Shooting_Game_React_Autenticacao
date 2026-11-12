@@ -1,15 +1,15 @@
 import Link from "next/link";
-import styles from "./page.module.css";
+import './globals.css';
 
 export default function Home() {
   return (
-    <div className={styles.home}>
+    <div className='home'>
       <br />
       <h1>Bem vindo à Game Center!</h1>
       <h2>Entre em sua conta.
         <Link href='/dashboard'>
           <br />
-          <button className={styles.entrar}>Entrar</button>
+          <button className='entrar'>Entrar</button>
         </Link>
       </h2>
       <br />
@@ -17,7 +17,7 @@ export default function Home() {
       <h4>Cadastre-se!
         <Link href='/new'>
           <br />
-          <button className={styles.cadastrar}>Cadastrar</button>
+          <button className='cadastrar'>Cadastrar</button>
         </Link></h4>
     </div>
   );

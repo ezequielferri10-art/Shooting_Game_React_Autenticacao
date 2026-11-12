@@ -4,7 +4,6 @@ import BotaoLogout from "@/components/BotaoLogout";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import api from "@/lib/api";
-import AlteraPassword from "@/components/AlteraPassword";
 
 export default function Dashboard() {
 	const [score1, setScore1] = useState(0);

@@ -1,10 +1,83 @@
 :root {
         --cor-bordas: #1aa7b4;
-        --cor-sombra: #12f325;
-        --cor-txt-hover: rgb(34, 33, 33);
-      }
+        --cor-sombra: 0 0 25px #12f325;
+        --cor-txt-hover:  rgb(34, 33, 33);
 
+        
+      }
 html,
+
+.home {
+  background-image: url('/assets/background/site/background2.png');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  width: 100%;
+  height: 100%;
+  min-height: 100vh;
+}
+
+.home h1 {
+  margin-top: 100px;
+  font-size: 80px;
+  color: rgb(250, 250, 250);
+}
+
+.home h2 {
+  font-size: 40px;
+  color: #1aa7b4;
+}
+
+.home h3,
+.home h4 {
+  font-size: 20px;
+  color: #43a868;
+}
+
+.entrar {
+  text-align: center;
+  align-content: center;
+  align-items: center;
+  align-self: center;
+  width: 100px;
+  font-size: 14px;
+  padding: 10px 15px;
+  border-radius: 20px;
+  border: 2px solid #1aa7b4;
+  background-color: transparent;
+  color: white;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.entrar:hover {
+  background-color: #1aa7b4;
+  box-shadow: var(--cor-sombra);
+  color: var(--cor-txt-hover)
+}
+
+.cadastrar {
+  text-align: center;
+  align-content: center;
+  align-items: center;
+  align-self: center;
+  width: 100px;
+  font-size: 14px;
+  padding: 10px 15px;
+  border-radius: 20px;
+  border: 2px solid #07eeeed0;
+  background-color: transparent;
+  color: white;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  margin-top: 20px;
+}
+
+.cadastrar:hover {
+  background-color: #07eeee;
+  box-shadow: var(--cor-sombra);
+  color: var(--cor-txt-hover)
+}
 body {
   margin: 0;
   padding: 0;
@@ -79,10 +152,7 @@ a{
   margin: 10px auto 20px auto;
   padding: 5px;
 }
-#senhaNova{
-  margin-left: 15px;
-  margin-right: 10px;
-}
+
 .rodape_reset_senha {
     background-color: transparent;
     color: white;
@@ -177,7 +247,7 @@ a{
 .voltar:hover {
   background-color: #eea70d;
   border-color: #eea70d;
-  box-shadow: 0 0 10px var(--cor-sombra);
+  box-shadow: var(--cor-sombra);
   color: var(--cor-txt-hover);
 }
 
@@ -200,7 +270,7 @@ a{
 .altDados:hover {
   background-color: #f3ef12;
   border-color: #f3ef12;
-  box-shadow: 0 0 10px var(--cor-sombra);
+  box-shadow: var(--cor-sombra);
   color: var(--cor-txt-hover);
 }
 
@@ -224,7 +294,7 @@ a{
 .altPass:hover {
   background-color: #ccee0de7;
   border: 2px solid #d2e622;
-  box-shadow: 0 0 10px var(--cor-sombra);
+  box-shadow: var(--cor-sombra);
   color: var(--cor-txt-hover);
 }
 
@@ -247,7 +317,7 @@ a{
 
 .recuperarSenha:hover {
   background-color: #f4d03f;
-  box-shadow: 0 0 10px var(--cor-sombra);
+  box-shadow: var(--cor-sombra);
   color: var(--cor-txt-hover);
 }
 
@@ -270,7 +340,7 @@ a{
 
 .tentarNovamente:hover {
   background-color: #e74c3c;
-  box-shadow: 0 0 10px var(--cor-sombra);
+  box-shadow: var(--cor-sombra);
   color: var(--cor-txt-hover);
 }
 
@@ -337,7 +407,7 @@ a{
 
 .adicionar:hover {
   background-color: #2ddb16;
-  box-shadow: 0 0 10px var(--cor-sombra);
+  box-shadow: var(--cor-sombra);
   color: var(--cor-txt-hover)
 }
 
@@ -474,14 +544,14 @@ a{
 
 .jogarSs:hover {
   background: #35da03;
-  box-shadow: 0 0 18px var(--cor-sombra);
+  box-shadow: var(--cor-sombra);
   transform: translateY(-1px);
   color: var(--cor-txt-hover);
 }
 
 .jogarI:hover {
   background: #d5d809;
-  box-shadow: 0 0 18px var(--cor-sombra);
+  box-shadow: var(--cor-sombra);
   transform: translateY(-1px);
   color: var(--cor-txt-hover);
 }
@@ -561,7 +631,7 @@ a{
 
 .sairConta:hover {
   background-color: #fa3030be;
-  box-shadow: 0 0 10px var(--cor-sombra);
+  box-shadow: var(--cor-sombra);
   color: var(--cor-txt-hover);
 }
 
@@ -584,7 +654,205 @@ a{
 
 .reiniciarJogo:hover {
   background-color: #eff309;
-  box-shadow: 0 0 10px var(--cor-sombra);
+  box-shadow: var(--cor-sombra);
   color: var(--cor-txt-hover);
 }
 
+.account-page {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  padding: 32px 16px;
+  background-image: url('/assets/background/site/background3.jpg');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+.account-card {
+  width: min(100%, 620px);
+  padding: 28px 24px 24px;
+  border: 3px solid rgba(26, 167, 180, 0.75);
+  border-radius: 20px;
+  background: rgba(10, 16, 24, 0.82);
+  box-shadow: 0 16px 30px rgba(0, 0, 0, 0.3);
+}
+
+.account-header {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.account-eyebrow {
+  margin: 0 0 6px;
+  color: #59d4dd;
+  font-size: 32px;
+  font-weight: 700;
+}
+
+.account-header h1 {
+  margin: 0;
+  color: #fff;
+  font-size: clamp(28px, 5vw, 42px);
+}
+
+.account-form {
+  margin-top: 18px;
+  padding: 20px 18px;
+  border: 2px solid rgba(26, 167, 180, 0.6);
+  border-radius: 16px;
+  background: rgba(255, 255, 255, 0.02);
+  align-items: center;
+}
+
+.account-form h2 {
+  margin: 0 0 18px;
+  color: #b8f1f8;
+  font-size: clamp(20px, 3vw, 28px);
+}
+
+.field-group {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-bottom: 16px;
+}
+
+.field-group label {
+  color: #d7f9ff;
+  font-weight: 600;
+}
+
+.field-group input {
+  width: 100%;
+  box-sizing: border-box;
+  padding: 10px 12px;
+  border: 2px solid rgba(26, 167, 180, 0.75);
+  border-radius: 10px;
+  background: rgba(17, 24, 31, 0.9);
+  color: #fff;
+  font-size: 16px;
+}
+
+.field-group input:focus {
+  outline: none;
+  box-shadow: 0 0 10px rgba(26, 167, 180, 0.8);
+}
+
+.account-button,
+.back-button,
+.delete-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 999px;
+  border: 2px solid transparent;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.account-button {
+  padding: 10px 18px;
+  background: transparent;
+  border-color: #3fe123;
+  color: #fff;
+}
+
+.account-button:hover {
+  background: #3fe123;
+  color: #111;
+  box-shadow: var(--cor-sombra);
+  color: var(--cor-txt-hover);
+}
+
+.account-button.secondary {
+  padding: 10px 18px;
+  background: transparent;
+  border-color: #13d4e2;
+  color: #fff;
+}
+
+.account-button.secondary:hover {
+  background: #4bddf0;
+  box-shadow: var(--cor-sombra);
+  color: var(--cor-txt-hover);
+}
+
+.account-message {
+  margin: 0 0 18px;
+  padding: 10px 12px;
+  border-radius: 10px;
+  background: rgba(23, 190, 142, 0.12);
+  border: 1px solid rgba(23, 190, 142, 0.4);
+  color: #d9fff1;
+  font-weight: 600;
+}
+
+.account-actions {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  margin-top: 22px;
+}
+
+.back-button {
+  padding: 10px 18px;
+  color: #fff;
+  background: transparent;
+  border-color: #f4d03f;
+  text-decoration: none;
+}
+
+.back-button:hover {
+  background: #f4d03f;
+  box-shadow: var(--cor-sombra);
+  color: var(--cor-txt-hover);
+}
+
+.delete-button {
+  padding: 10px 18px;
+  background: transparent;
+  border: 3px solid #ee1414;
+  color: #fff;
+  cursor: pointer;
+}
+
+.delete-button:hover {
+  background: #f03a0d;
+  animation: piscar 2s infinite;
+  color: var(--cor-txt-hover);
+}
+
+@keyframes piscar {
+  0%, 100% {
+    color: aliceblue;
+    text-shadow: 0 0 8px black; /* Brilho extra no branco */
+    box-shadow: 5px 5px 30px rgb(240, 145, 3); /* Sombra acesa */
+  }
+  50% {
+    color: transparent; /* Faz o texto sumir na metade do ciclo */
+    text-shadow: none;
+    box-shadow: none; /* Faz a sombra apagar na metade do ciclo */
+  }
+}
+
+
+@media (max-width: 560px) {
+  .account-card {
+    padding: 20px 16px;
+  }
+
+  .account-actions {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .back-button,
+  .delete-button,
+  .account-button {
+    width: 100%;
+  }
+}

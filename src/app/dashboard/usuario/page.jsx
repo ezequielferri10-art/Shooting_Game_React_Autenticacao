@@ -8,10 +8,12 @@ export default function UsuarioPage() {
   const [usuario, setUsuario] = useState(null);
   const [nome, setNome] = useState('');
   const [email, setEmail] = useState('');
-//   const [senhaAntiga, setSenhaAntiga] = useState('');
-//   const [senhaNova, setSenhaNova] = useState('');
+  const [senhaAntiga, setSenhaAntiga] = useState('');
+  const [senhaNova, setSenhaNova] = useState('');
   const [carregando, setCarregando] = useState(true);
-  const [salvando, setSalvando] = useState(false);
+  const [salvandoDados, setSalvandoDados] = useState(false);
+  const [salvandoSenha, setSalvandoSenha] = useState(false);
+  const [excluindoConta, setExcluindoConta] = useState(false);
   const [mensagem, setMensagem] = useState('');
 
   useEffect(() => {
@@ -40,7 +42,7 @@ export default function UsuarioPage() {
               setEmail(data.email || emailArmazenado);
             }
           } catch (error) {
-            console.warn('Usuário carregado do localStorage porque a API retornou 404 ou não existe:', error);
+            console.warn('Usuário carregado do localStorage porque a API não retornou dados válidos:', error);
           }
         }
       } catch (error) {
@@ -57,14 +59,8 @@ export default function UsuarioPage() {
   async function handleSalvarDados(e) {
     e.preventDefault();
 
-    const idUsuario = usuario?._id || localStorage.getItem('idUsuario');
-    if (!idUsuario) {
-      setMensagem('Usuário não identificado. Faça login novamente.');
-      return;
-    }
-
     const nomeTrim = nome.trim();
-    const emailTrim = email.trim();
+    const emailTrim = email.trim().toLowerCase();
 
     if (!nomeTrim || !emailTrim) {
       setMensagem('Preencha nome e e-mail.');
@@ -72,133 +68,157 @@ export default function UsuarioPage() {
     }
 
     try {
-      setSalvando(true);
+      setSalvandoDados(true);
       setMensagem('');
 
-      await api.patch(`/usuarios/${idUsuario}`, {
+      await api.patch('/usuarios', {
         nome: nomeTrim,
         email: emailTrim,
       });
 
-      setUsuario((anterior) => ({ ...anterior, nome: nomeTrim, email: emailTrim }));
+      setUsuario((anterior) => ({ ...(anterior || {}), nome: nomeTrim, email: emailTrim }));
       localStorage.setItem('nomeUsuario', nomeTrim);
       localStorage.setItem('emailUsuario', emailTrim);
       setMensagem('Dados atualizados com sucesso!');
     } catch (error) {
       console.error('Erro ao atualizar dados:', error);
-      setMensagem(error.response?.data?.message || 'Erro ao atualizar os dados.');
+      setMensagem(error.response?.data?.message || error.response?.data?.error || 'Erro ao atualizar os dados.');
     } finally {
-      setSalvando(false);
+      setSalvandoDados(false);
     }
   }
 
-//   async function handleAlterarSenha(e) {
-//     e.preventDefault();
+  async function handleAlterarSenha(e) {
+    e.preventDefault();
 
-//     const idUsuario = usuario?._id || localStorage.getItem('idUsuario');
-//     if (!idUsuario) {
-//       setMensagem('Usuário não identificado para alterar a senha.');
-//       return;
-//     }
+    if (!senhaAntiga.trim() || !senhaNova.trim()) {
+      setMensagem('Preencha a senha atual e a nova senha.');
+      return;
+    }
 
-//     if (!senhaAntiga.trim() || !senhaNova.trim()) {
-//       setMensagem('Preencha a senha atual e a nova senha.');
-//       return;
-//     }
+    try {
+      setSalvandoSenha(true);
+      setMensagem('');
 
-//     try {
-//       setSalvando(true);
-//       setMensagem('');
+      await api.patch('/usuarios/senha', {
+        senhaantiga: senhaAntiga.trim(),
+        senhanova: senhaNova.trim(),
+      });
 
-//       await api.patch(`/usuarios/${idUsuario}/senha`, {
-//         senhaantiga: senhaAntiga.trim(),
-//         senhanova: senhaNova.trim(),
-//       });
+      setSenhaAntiga('');
+      setSenhaNova('');
+      setMensagem('Senha alterada com sucesso!');
+    } catch (error) {
+      console.error('Erro ao alterar senha:', error);
+      setMensagem(error.response?.data?.message || error.response?.data?.error || 'Erro ao alterar a senha.');
+    } finally {
+      setSalvandoSenha(false);
+    }
+  }
 
-//       setSenhaAntiga('');
-//       setSenhaNova('');
-//       setMensagem('Senha alterada com sucesso!');
-//     } catch (error) {
-//       console.error('Erro ao alterar senha:', error);
-//       setMensagem(error.response?.data?.message || 'Erro ao alterar a senha.');
-//     } finally {
-//       setSalvando(false);
-//     }
-//   }
+  async function handleExcluirConta() {
+    const confirmado = window.confirm('Tem certeza que deseja excluir sua conta? Essa ação não pode ser desfeita.');
+    if (!confirmado) return;
+
+    try {
+      setExcluindoConta(true);
+      setMensagem('');
+
+      await api.delete('/usuarios');
+
+      document.cookie = 'token=; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT; SameSite=Lax';
+      localStorage.clear();
+      window.location.replace('/');
+    } catch (error) {
+      console.error('Erro ao excluir conta:', error);
+      setMensagem(error.response?.data?.message || error.response?.data?.error || 'Erro ao excluir a conta.');
+    } finally {
+      setExcluindoConta(false);
+    }
+  }
 
   if (carregando) {
-    return <p>Carregando dados da conta...</p>;
+    return <p className='account-loading'>Carregando dados da conta...</p>;
   }
 
   return (
-    <div style={{ maxWidth: 500, margin: '40px auto', padding: 20 }}>
-      <h1>Gerenciar Conta</h1>
-
-      {mensagem && <p>{mensagem}</p>}
-
-      <form onSubmit={handleSalvarDados}>
-        <h2>Dados pessoais</h2>
-
-        <div>
-          <label htmlFor='nome'>Nome:</label><br />
-          <input
-            id='nome'
-            type='text'
-            value={nome}
-            onChange={(e) => setNome(e.target.value)}
-            style={{ width: '100%', marginBottom: 10 }}
-          />
+    <main className='account-page'>
+      <section className='account-card'>
+        <div className='account-header'>
+          <p className='account-eyebrow'>Game Center</p>
+          <h1>Gerenciar Conta</h1>
         </div>
 
-        <div>
-          <label htmlFor='email'>E-mail:</label><br />
-          <input
-            id='email'
-            type='email'
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            style={{ width: '100%', marginBottom: 10 }}
-          />
+        {mensagem && <p className='account-message'>{mensagem}</p>}
+
+        <form onSubmit={handleSalvarDados} className='account-form'>
+          <h2>Dados Pessoais</h2>
+
+          <div className='field-group'> 
+            <label htmlFor='nome'>Nome:</label>
+            <input
+              id='nome'
+              type='text'
+              value={nome}
+              onChange={(e) => setNome(e.target.value)}
+            />
+          </div>
+
+          <div className='field-group'>
+            <label htmlFor='email'>E-mail:</label>
+            <input
+              id='email'
+              type='email'
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+            />
+          </div>
+
+          <button type='submit' className='account-button' disabled={salvandoDados || salvandoSenha || excluindoConta}>
+            {salvandoDados ? 'Salvando...' : 'Salvar Alterações'}
+          </button>
+        </form>
+
+        <form onSubmit={handleAlterarSenha} className='account-form'>
+          <h2>Alterar Senha</h2>
+
+          <div className='field-group'>
+            <label htmlFor='senhaAntiga'>Senha Atual:</label>
+            <input
+              id='senhaAntiga'
+              type='password'
+              value={senhaAntiga}
+              onChange={(e) => setSenhaAntiga(e.target.value)}
+            />
+          </div>
+
+          <div className='field-group'>
+            <label htmlFor='senhaNova'>Nova Senha:</label>
+            <input
+              id='senhaNova'
+              type='password'
+              value={senhaNova}
+              onChange={(e) => setSenhaNova(e.target.value)}
+            />
+          </div>
+
+          <button type='submit' className='account-button secondary' disabled={salvandoDados || salvandoSenha || excluindoConta}>
+            {salvandoSenha ? 'Alterando...' : 'Alterar Senha'}
+          </button>
+        </form>
+
+        <div className='account-actions'>
+          <Link href='/dashboard' className='back-button'>Voltar</Link>
+          <button
+            type='button'
+            className='delete-button'
+            onClick={handleExcluirConta}
+            disabled={salvandoDados || salvandoSenha || excluindoConta}
+          >
+            {excluindoConta ? 'Excluindo...' : 'Excluir conta'}
+          </button>
         </div>
-
-        <button type='submit' disabled={salvando}>
-          {salvando ? 'Salvando...' : 'Salvar dados'}
-        </button>
-      </form>
-
-      {/* <form onSubmit={handleAlterarSenha} style={{ marginTop: 30 }}>
-        <h2>Alterar senha</h2>
-
-        <div>
-          <label htmlFor='senhaAntiga'>Senha atual:</label><br />
-          <input
-            id='senhaAntiga'
-            type='password'
-            value={senhaAntiga}
-            onChange={(e) => setSenhaAntiga(e.target.value)}
-            style={{ width: '100%', marginBottom: 10 }}
-          />
-        </div>
-
-        <div>
-          <label htmlFor='senhaNova'>Nova senha:</label><br />
-          <input
-            id='senhaNova'
-            type='password'
-            value={senhaNova}
-            onChange={(e) => setSenhaNova(e.target.value)}
-            style={{ width: '100%', marginBottom: 10 }}
-          />
-        </div>
-
-        <button type='submit' disabled={salvando}>
-          {salvando ? 'Alterando...' : 'Alterar senha'}
-        </button>
-      </form> */}
-
-      <div style={{ marginTop: 20 }}>
-        <Link href='/dashboard'>Voltar</Link>
-      </div>
-    </div>
+      </section>
+    </main>
   );
 }
