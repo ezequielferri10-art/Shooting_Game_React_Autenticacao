@@ -103,7 +103,15 @@ export default function Dashboard() {
 			<section className='dashboard-games' aria-label='Seus jogos'>
 				<article className='SideShot'>
 					<p className='SideShot0'>SideShot</p>
-					<p className='SideShot1'>O objetivo do jogo é abater inimigor, a cada fase, e obter o mair número de pontos possível.<br></br> Inimigos aparecem à direita da tela.<br></br> Abata-os antes que alcancem a borda esquerda.</p>
+					<p className='SideShot1'>
+						O objetivo do jogo é abater inimigor, a cada fase, e obter o mair número de pontos possível.
+						<br></br>
+						Inimigos aparecem à direita da tela.
+						<br></br>
+						Clique nos inimigos para abate-los antes que alcancem a borda esquerda.
+						<br></br>
+						<br></br>
+					</p>
 					<p className='scoreSs'>Sua pontuação máxima atual no jogo é:<strong>{score1}</strong></p>
 					<Link href='/dashboard/games/SideShot/' target='_blank' rel='noopener noreferrer' className='jogarSs'>
 						Jogar SideShot
@@ -117,9 +125,9 @@ export default function Dashboard() {
 						<br></br>
 						Impeça-os!!
 						<br></br>
-						Tecla "1" dispara tiro simples.
+						Use a tecla "1" ou clique com o mouse para disparar tiro simples.
 						<br></br>
-						Tecla "2" dispara um tiro mais poderoso, porém limitado.
+						Use a tecla "2" dispara um tiro mais poderoso, porém limitado.
 					</p>
 					<p className='scoreI'>Sua pontuação máxima atual no jogo é:<strong>{score2}</strong></p>
 					<Link href='/dashboard/games/Invasion/' target='_blank' rel='noopener noreferrer' className='jogarI'>
