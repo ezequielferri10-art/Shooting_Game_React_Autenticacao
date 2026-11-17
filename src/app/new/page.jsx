@@ -85,7 +85,7 @@ export default function New(){
                 <p>Email: <input type="email" id='email' size='25' value={inputEmail} onChange={e => setInputEmail(e.target.value)} onKeyUp={handleKeyUp}/></p>
                 <p>Password: <input type="password" id='password' size='25' value={inputPassword} onChange={e => setInputPassword(e.target.value)} onKeyUp={handleKeyUp}/></p>
             </div>
-            <button className='adicionar' onClick={handleButtonClick}>Cadastrar</button>
+            <button className='cadastrar2' onClick={handleButtonClick}>Cadastrar</button>
             <br /><br />
             <Link href='/'><button className='voltar'>Voltar</button></Link>
         </div>
