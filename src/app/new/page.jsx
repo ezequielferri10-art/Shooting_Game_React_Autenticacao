@@ -3,41 +3,39 @@ import api from "@/lib/api"
 import Link from "next/link"
 import { useState } from "react"
 import validator from "validator"
+import { useAlerta } from "@/components/Alerta"
 
 export default function New(){
+    const { showAlert } = useAlerta()
     const [inputNome, setInputNome] = useState('')
     const [inputEmail, setInputEmail] = useState('')
     const [inputPassword, setInputPassword] = useState('')
     const [mensagemErro, setMensagemErro] = useState('')
 
     async function handleButtonClick(){
-        // Reseta o estado de erro ao tentar enviar novamente
         setMensagemErro('')
         
         const nome = inputNome.trim()
         const email = inputEmail.trim()
         const password = inputPassword.trim()
 
-        //Validação de campos vazios
         if(!nome || !email || !password){
-            alert('Por favor, preencha todos os campos!')
+            showAlert('Por favor, preencha todos os campos!', 'error')
             return
         }
 
-        //Validação do formato do e-mail usando o validator
         if (!validator.isEmail(email)) {
-            alert('Por favor, insira um e-mail válido!')
+            showAlert('Por favor, insira um e-mail válido!', 'error')
             setMensagemErro('O formato do e-mail digitado é inválido.\nExemplo: usuario@provedor.com')
             return
         }
 
-        //Normaliza o e-mail (remove espaços extras, converte para minúsculas)
         const emailNormalizado = validator.normalizeEmail(email) || email
 
         try{
-            // Enviando o e-mail já normalizado e validado para a API
             const response = await api.post('/usuarios', {nome, email: emailNormalizado, senha: password})
             if (response.status == 201){
+                showAlert('Usuário cadastrado com sucesso!', 'success')
                 window.location.replace('/dashboard/usuarios')
             }
         }catch (error){
@@ -56,13 +54,14 @@ export default function New(){
                 status === 409 ||
                 /ja cadastrado|já cadastrado|duplicate|duplicado|email/i.test(textoErro)
             ){
-                alert('E-mail já cadastrado');
-                setMensagemErro('Já existe cadastro com este e-mail.\nPor favor, tente outro e-mail.');
-                setInputEmail('');
+                showAlert('E-mail já cadastrado', 'error')
+                setMensagemErro('Já existe cadastro com este e-mail.\nPor favor, tente outro e-mail.')
+                setInputEmail('')
                 return
             }
 
             setMensagemErro('Erro ao cadastrar usuário')
+            showAlert('Erro ao cadastrar usuário.', 'error')
             console.error('Erro ao cadastrar usuário: ', error)
         }
     }

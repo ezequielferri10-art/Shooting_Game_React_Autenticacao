@@ -1,4 +1,5 @@
 import "./globals.css";
+import { AlertaProvider } from "@/components/Alerta";
 
 export const metadata = {
   title: "Create Next App",
@@ -8,7 +9,9 @@ export const metadata = {
 export default function RootLayout({ children }) {
   return (
     <html style={{ margin: 0, padding: 0, width: '100%', height: '100%' }}>
-      <body style={{ margin: 0, padding: 0, width: '100%', height: '100%', overflow: 'hidden' }}>{children}</body>
+      <body style={{ margin: 0, padding: 0, width: '100%', height: '100%', overflow: 'hidden' }}>
+        <AlertaProvider>{children}</AlertaProvider>
+      </body>
     </html>
   );
 }

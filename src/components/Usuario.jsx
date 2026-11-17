@@ -2,8 +2,10 @@
 import api from "@/lib/api"
 import { useState } from "react"
 import AlteraPassword from "./AlteraPassword"
+import { useAlerta } from "@/components/Alerta"
 
 export default function Usuario({ usuario }) {
+    const { showAlert } = useAlerta()
     const [editar, setEditar] = useState(false)
     const [apagar, setApagar] = useState(false)
     const [alterarPassword, setAlterarPassword] = useState(false)
@@ -13,7 +15,7 @@ export default function Usuario({ usuario }) {
         const nome = inputNome.trim()
         const email = inputEmail.trim()
         if (!nome || !email) {
-            alert('Por favor, preencha o nome e o e-mail.')
+            showAlert('Por favor, preencha o nome e o e-mail.', 'error')
             return
         }
         try {
@@ -23,6 +25,7 @@ export default function Usuario({ usuario }) {
             }
         } catch (error) {
             console.error('Erro ao atualizar o usuário', error)
+            showAlert('Erro ao atualizar o usuário.', 'error')
         }
         setEditar(false)
     }
@@ -34,6 +37,7 @@ export default function Usuario({ usuario }) {
             }
         } catch (error) {
             console.error('Erro ao apagar o usuário: ', error)
+            showAlert('Erro ao apagar o usuário.', 'error')
         }
     }
     function handleCancelEditar() {

@@ -14,6 +14,7 @@ export default function UsuarioPage() {
   const [salvandoDados, setSalvandoDados] = useState(false);
   const [salvandoSenha, setSalvandoSenha] = useState(false);
   const [excluindoConta, setExcluindoConta] = useState(false);
+  const [confirmarExclusao, setConfirmarExclusao] = useState(false);
   const [mensagem, setMensagem] = useState('');
 
   useEffect(() => {
@@ -116,10 +117,7 @@ export default function UsuarioPage() {
     }
   }
 
-  async function handleExcluirConta() {
-    const confirmado = window.confirm('Tem certeza que deseja excluir sua conta? Essa ação não pode ser desfeita.');
-    if (!confirmado) return;
-
+  async function confirmarExclusaoConta() {
     try {
       setExcluindoConta(true);
       setMensagem('');
@@ -134,7 +132,16 @@ export default function UsuarioPage() {
       setMensagem(error.response?.data?.message || error.response?.data?.error || 'Erro ao excluir a conta.');
     } finally {
       setExcluindoConta(false);
+      setConfirmarExclusao(false);
     }
+  }
+
+  function abrirModalExclusao() {
+    setConfirmarExclusao(true);
+  }
+
+  function fecharModalExclusao() {
+    setConfirmarExclusao(false);
   }
 
   if (carregando) {
@@ -212,13 +219,35 @@ export default function UsuarioPage() {
           <button
             type='button'
             className='delete-button'
-            onClick={handleExcluirConta}
+            onClick={abrirModalExclusao}
             disabled={salvandoDados || salvandoSenha || excluindoConta}
           >
             {excluindoConta ? 'Excluindo...' : 'Excluir conta'}
           </button>
         </div>
       </section>
+
+      {confirmarExclusao && (
+        <div className='confirm-modal-overlay' onClick={fecharModalExclusao}>
+          <div className='confirm-modal' onClick={(e) => e.stopPropagation()}>
+            <div className='confirm-modal-icon'>!</div>
+            <h3>Excluir conta</h3>
+            <p>
+              Tem certeza que deseja excluir sua conta? <br />
+              Essa ação não pode ser desfeita.
+            </p>
+
+            <div className='confirm-modal-actions'>
+              <button type='button' className='confirm-cancel-button' onClick={fecharModalExclusao}>
+                Cancelar
+              </button>
+              <button type='button' className='confirm-delete-button' onClick={confirmarExclusaoConta}>
+                {excluindoConta ? 'Excluindo...' : 'Excluir'}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </main>
   );
 }
