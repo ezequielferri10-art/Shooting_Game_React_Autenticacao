@@ -8,6 +8,7 @@ export default function UsuarioPage() {
   const [usuario, setUsuario] = useState(null);
   const [nome, setNome] = useState('');
   const [email, setEmail] = useState('');
+  const [emailConfirmacao, setEmailConfirmacao] = useState('');
   const [senhaAntiga, setSenhaAntiga] = useState('');
   const [senhaNova, setSenhaNova] = useState('');
   const [carregando, setCarregando] = useState(true);
@@ -62,9 +63,15 @@ export default function UsuarioPage() {
 
     const nomeTrim = nome.trim();
     const emailTrim = email.trim().toLowerCase();
+    const emailConfirmacaoTrim = emailConfirmacao.trim().toLowerCase();
 
     if (!nomeTrim || !emailTrim) {
       setMensagem('Preencha nome e e-mail.');
+      return;
+    }
+
+    if (emailTrim !== emailConfirmacaoTrim) {
+      setMensagem('Os e-mails não coincidem.');
       return;
     }
 
@@ -178,6 +185,16 @@ export default function UsuarioPage() {
               type='email'
               value={email}
               onChange={(e) => setEmail(e.target.value)}
+            />
+          </div>
+
+          <div className='field-group'>
+            <label htmlFor='emailConfirmacao'>Confirmar e-mail:</label>
+            <input
+              id='emailConfirmacao'
+              type='email'
+              value={emailConfirmacao}
+              onChange={(e) => setEmailConfirmacao(e.target.value)}
             />
           </div>
 

@@ -11,11 +11,17 @@ export default function Usuario({ usuario }) {
     const [alterarPassword, setAlterarPassword] = useState(false)
     const [inputNome, setInputNome] = useState(usuario.nome)
     const [inputEmail, setInputEmail] = useState(usuario.email)
+    const [inputConfirmarEmail, setInputConfirmarEmail] = useState(usuario.email)
     async function handleConfirmEditar() {
         const nome = inputNome.trim()
         const email = inputEmail.trim()
-        if (!nome || !email) {
-            showAlert('Por favor, preencha o nome e o e-mail.', 'error')
+        const confirmarEmail = inputConfirmarEmail.trim()
+        if (!nome || !email || !confirmarEmail) {
+            showAlert('Por favor, preencha nome e e-mail.', 'error')
+            return
+        }
+        if (email.toLowerCase() !== confirmarEmail.toLowerCase()) {
+            showAlert('Os e-mails digitados não coincidem.', 'error')
             return
         }
         try {
@@ -44,6 +50,7 @@ export default function Usuario({ usuario }) {
         setEditar(false)
         setInputNome(usuario.nome)
         setInputEmail(usuario.email)
+        setInputConfirmarEmail(usuario.email)
     }
     function handleKeyUp(e) {
         if (e.key == 'Enter') {
@@ -70,7 +77,11 @@ export default function Usuario({ usuario }) {
                     : usuario.nome}
                 </td>
                 <td>{editar
-                    ? <input type='email' size='15' value={inputEmail} onChange={e => setInputEmail(e.target.value)} onKeyUp={handleKeyUp} />
+                    ? <>
+                        <input type='email' size='15' value={inputEmail} onChange={e => setInputEmail(e.target.value)} onKeyUp={handleKeyUp} />
+                        <br />
+                        <input type='email' size='15' value={inputConfirmarEmail} onChange={e => setInputConfirmarEmail(e.target.value)} onKeyUp={handleKeyUp} placeholder='Confirmar e-mail' />
+                      </>
                     : usuario.email}
                 </td>
                 <td>

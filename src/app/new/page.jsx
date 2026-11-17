@@ -9,6 +9,7 @@ export default function New(){
     const { showAlert } = useAlerta()
     const [inputNome, setInputNome] = useState('')
     const [inputEmail, setInputEmail] = useState('')
+    const [inputRepeatEmail, setRepeatEmail] = useState('')
     const [inputPassword, setInputPassword] = useState('')
     const [mensagemErro, setMensagemErro] = useState('')
 
@@ -17,10 +18,17 @@ export default function New(){
         
         const nome = inputNome.trim()
         const email = inputEmail.trim()
+        const emailConfirmacao = inputRepeatEmail.trim()
         const password = inputPassword.trim()
 
-        if(!nome || !email || !password){
+        if(!nome || !email || !emailConfirmacao || !password){
             showAlert('Por favor, preencha todos os campos!', 'error')
+            return
+        }
+
+        if (email.toLowerCase() !== emailConfirmacao.toLowerCase()) {
+            showAlert('Os e-mails digitados não coincidem.', 'error')
+            setMensagemErro('Os e-mails informados são diferentes.\nDigite os dois iguais para continuar.')
             return
         }
 
@@ -57,6 +65,7 @@ export default function New(){
                 showAlert('E-mail já cadastrado', 'error')
                 setMensagemErro('Já existe cadastro com este e-mail.\nPor favor, tente outro e-mail.')
                 setInputEmail('')
+                setRepeatEmail('')
                 return
             }
 
@@ -71,6 +80,7 @@ export default function New(){
         }else if(e.key == 'Escape'){
             if (e.target.id == 'nome') setInputNome('')
             if (e.target.id == 'email') setInputEmail('')
+            if (e.target.id == 'repeatEmail') setRepeatEmail('')
             if (e.target.id == 'password') setInputPassword('')
         }
     }
@@ -82,6 +92,7 @@ export default function New(){
                 {mensagemErro && <p style={{ color: 'red', fontWeight: 'bold', whiteSpace: 'pre-line', textAlign: 'center' }}>{mensagemErro}</p>}
                 <p>Nome: <input type="text" id='nome' size='25' value={inputNome} onChange={e => setInputNome(e.target.value)} onKeyUp={handleKeyUp}/></p>
                 <p>Email: <input type="email" id='email' size='25' value={inputEmail} onChange={e => setInputEmail(e.target.value)} onKeyUp={handleKeyUp}/></p>
+                <p>Repita o Email: <input type="email" id='repeatEmail' size='25' value={inputRepeatEmail} onChange={e => setRepeatEmail(e.target.value)} onKeyUp={handleKeyUp}/></p>
                 <p>Password: <input type="password" id='password' size='25' value={inputPassword} onChange={e => setInputPassword(e.target.value)} onKeyUp={handleKeyUp}/></p>
             </div>
             <button className='cadastrar2' onClick={handleButtonClick}>Cadastrar</button>

@@ -8,8 +8,8 @@ export const metadata = {
 
 export default function RootLayout({ children }) {
   return (
-    <html style={{ margin: 0, padding: 0, width: '100%', height: '100%' }}>
-      <body style={{ margin: 0, padding: 0, width: '100%', height: '100%', overflow: 'hidden' }}>
+    <html style={{ margin: 0, padding: 0, width: '100%', minHeight: '100%' }}>
+      <body style={{ margin: 0, padding: 0, width: '100%', minHeight: '100vh', overflowX: 'hidden' }}>
         <AlertaProvider>{children}</AlertaProvider>
       </body>
     </html>
