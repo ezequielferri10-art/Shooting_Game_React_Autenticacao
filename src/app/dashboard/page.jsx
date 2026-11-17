@@ -112,7 +112,15 @@ export default function Dashboard() {
 
 				<article className='Invasion'>
 					<p className='Invasion0'>Invasion</p>
-					<p className='Invasion1'>Inimigos, vindos de vários cantos da galáxia, se aproximam para atacar o planeta.<br></br>Impeça-os!!</p>
+					<p className='Invasion1'>
+						Inimigos, vindos de vários cantos da galáxia, se aproximam para atacar o planeta.
+						<br></br>
+						Impeça-os!!
+						<br></br>
+						Tecla "1" dispara tiro simples.
+						<br></br>
+						Tecla "2" dispara um tiro mais poderoso, porém limitado.
+					</p>
 					<p className='scoreI'>Sua pontuação máxima atual no jogo é:<strong>{score2}</strong></p>
 					<Link href='/dashboard/games/Invasion/' target='_blank' rel='noopener noreferrer' className='jogarI'>
 						Jogar Invasion
