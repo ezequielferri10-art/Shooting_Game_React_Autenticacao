@@ -3,8 +3,10 @@
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
 import api from '@/lib/api';
+import { useAlerta } from '@/components/Alerta';
 
 export default function UsuarioPage() {
+  const { showAlert } = useAlerta();
   const [usuario, setUsuario] = useState(null);
   const [nome, setNome] = useState('');
   const [email, setEmail] = useState('');
@@ -16,7 +18,6 @@ export default function UsuarioPage() {
   const [salvandoSenha, setSalvandoSenha] = useState(false);
   const [excluindoConta, setExcluindoConta] = useState(false);
   const [confirmarExclusao, setConfirmarExclusao] = useState(false);
-  const [mensagem, setMensagem] = useState('');
 
   useEffect(() => {
     async function carregarUsuario() {
@@ -49,48 +50,78 @@ export default function UsuarioPage() {
         }
       } catch (error) {
         console.error('Erro ao carregar usuário:', error);
-        setMensagem('Não foi possível carregar os dados do usuário.');
+        showAlert('Não foi possível carregar os dados do usuário.', 'error');
       } finally {
         setCarregando(false);
       }
     }
 
     carregarUsuario();
-  }, []);
+  }, [showAlert]);
 
-  async function handleSalvarDados(e) {
+  async function handleAlterarNome(e) {
     e.preventDefault();
 
     const nomeTrim = nome.trim();
-    const emailTrim = email.trim().toLowerCase();
-    const emailConfirmacaoTrim = emailConfirmacao.trim().toLowerCase();
-
-    if (!nomeTrim || !emailTrim) {
-      setMensagem('Preencha nome e e-mail.');
-      return;
-    }
-
-    if (emailTrim !== emailConfirmacaoTrim) {
-      setMensagem('Os e-mails não coincidem.');
+    if (!nomeTrim) {
+      showAlert('Preencha o novo nome.', 'error');
       return;
     }
 
     try {
       setSalvandoDados(true);
-      setMensagem('');
+      await api.patch('/usuarios', { nome: nomeTrim });
 
-      await api.patch('/usuarios', {
-        nome: nomeTrim,
-        email: emailTrim,
-      });
-
-      setUsuario((anterior) => ({ ...(anterior || {}), nome: nomeTrim, email: emailTrim }));
+      setUsuario((anterior) => ({ ...(anterior || {}), nome: nomeTrim }));
       localStorage.setItem('nomeUsuario', nomeTrim);
-      localStorage.setItem('emailUsuario', emailTrim);
-      setMensagem('Dados atualizados com sucesso!');
+      showAlert('Nome atualizado com sucesso!', 'success');
     } catch (error) {
-      console.error('Erro ao atualizar dados:', error);
-      setMensagem(error.response?.data?.message || error.response?.data?.error || 'Erro ao atualizar os dados.');
+      console.error('Erro ao atualizar nome:', error);
+      showAlert(error.response?.data?.message || error.response?.data?.error || 'Erro ao atualizar o nome.', 'error');
+    } finally {
+      setSalvandoDados(false);
+    }
+  }
+
+  async function handleAlterarEmail(e) {
+    e.preventDefault();
+
+    const emailTrim = email.trim().toLowerCase();
+    const emailConfirmacaoTrim = emailConfirmacao.trim().toLowerCase();
+    const emailOriginal = String(usuario?.email || localStorage.getItem('emailUsuario') || '').trim().toLowerCase();
+
+    if (!emailTrim) {
+      showAlert('Preencha o novo e-mail.', 'error');
+      return;
+    }
+
+    if (emailTrim === emailOriginal) {
+      showAlert('Informe um e-mail diferente do atual.', 'error');
+      setEmailConfirmacao('');
+      return;
+    }
+
+    if (!emailConfirmacaoTrim) {
+      showAlert('Confirme o novo e-mail.', 'error');
+      return;
+    }
+
+    if (emailTrim !== emailConfirmacaoTrim) {
+      showAlert('Os e-mails não coincidem.', 'error');
+      return;
+    }
+
+    try {
+      setSalvandoDados(true);
+      await api.patch('/usuarios', { email: emailTrim });
+
+      setUsuario((anterior) => ({ ...(anterior || {}), email: emailTrim }));
+      localStorage.setItem('emailUsuario', emailTrim);
+      setEmailConfirmacao('');
+      showAlert('E-mail atualizado com sucesso!', 'success');
+    } catch (error) {
+      console.error('Erro ao atualizar e-mail:', error);
+      showAlert(error.response?.data?.message || error.response?.data?.error || 'Erro ao atualizar o e-mail.', 'error');
     } finally {
       setSalvandoDados(false);
     }
@@ -100,13 +131,12 @@ export default function UsuarioPage() {
     e.preventDefault();
 
     if (!senhaAntiga.trim() || !senhaNova.trim()) {
-      setMensagem('Preencha a senha atual e a nova senha.');
+      showAlert('Preencha a senha atual e a nova senha.', 'error');
       return;
     }
 
     try {
       setSalvandoSenha(true);
-      setMensagem('');
 
       await api.patch('/usuarios/senha', {
         senhaantiga: senhaAntiga.trim(),
@@ -115,10 +145,10 @@ export default function UsuarioPage() {
 
       setSenhaAntiga('');
       setSenhaNova('');
-      setMensagem('Senha alterada com sucesso!');
+      showAlert('Senha alterada com sucesso!', 'success');
     } catch (error) {
       console.error('Erro ao alterar senha:', error);
-      setMensagem(error.response?.data?.message || error.response?.data?.error || 'Erro ao alterar a senha.');
+      showAlert(error.response?.data?.message || error.response?.data?.error || 'Erro ao alterar a senha.', 'error');
     } finally {
       setSalvandoSenha(false);
     }
@@ -127,7 +157,6 @@ export default function UsuarioPage() {
   async function confirmarExclusaoConta() {
     try {
       setExcluindoConta(true);
-      setMensagem('');
 
       await api.delete('/usuarios');
 
@@ -136,7 +165,7 @@ export default function UsuarioPage() {
       window.location.replace('/');
     } catch (error) {
       console.error('Erro ao excluir conta:', error);
-      setMensagem(error.response?.data?.message || error.response?.data?.error || 'Erro ao excluir a conta.');
+      showAlert(error.response?.data?.message || error.response?.data?.error || 'Erro ao excluir a conta.', 'error');
     } finally {
       setExcluindoConta(false);
       setConfirmarExclusao(false);
@@ -163,12 +192,10 @@ export default function UsuarioPage() {
           <h1>Gerenciar Conta</h1>
         </div>
 
-        {mensagem && <p className='account-message'>{mensagem}</p>}
+        <form onSubmit={handleAlterarNome} className='account-form'>
+          <h2>Alterar Nome</h2>
 
-        <form onSubmit={handleSalvarDados} className='account-form'>
-          <h2>Dados Pessoais</h2>
-
-          <div className='field-group'> 
+          <div className='field-group'>
             <label htmlFor='nome'>Nome:</label>
             <input
               id='nome'
@@ -177,6 +204,14 @@ export default function UsuarioPage() {
               onChange={(e) => setNome(e.target.value)}
             />
           </div>
+
+          <button type='submit' className='account-button' disabled={salvandoDados || salvandoSenha || excluindoConta}>
+            {salvandoDados ? 'Salvando...' : 'Salvar Nome'}
+          </button>
+        </form>
+
+        <form onSubmit={handleAlterarEmail} className='account-form'>
+          <h2>Alterar E-mail</h2>
 
           <div className='field-group'>
             <label htmlFor='email'>E-mail:</label>
@@ -199,7 +234,7 @@ export default function UsuarioPage() {
           </div>
 
           <button type='submit' className='account-button' disabled={salvandoDados || salvandoSenha || excluindoConta}>
-            {salvandoDados ? 'Salvando...' : 'Salvar Alterações'}
+            {salvandoDados ? 'Salvando...' : 'Salvar E-mail'}
           </button>
         </form>
 
