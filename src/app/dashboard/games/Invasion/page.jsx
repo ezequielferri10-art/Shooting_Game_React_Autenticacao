@@ -3,7 +3,7 @@ import api from "@/lib/api";
 import { useEffect, useRef, useState } from "react";
 
 const ASSET_PATHS = {
-  planet: "/assets/misc/invasion/planet2.png",
+  planet: "/assets/misc/invasion/planeta_rotacao.png",
   player: "/assets/misc/invasion/player.png",
   enemy001: "/assets/enemy/invader/enemy001_40.png",
   enemy002: "/assets/enemy/invader/enemy002_40.png",
@@ -22,30 +22,59 @@ const loadImage = (src) =>
   });
 
 class Planet {
-  constructor(game) {
-    this.game = game;
-    this.x = this.game.width * 0.5;
-    this.y = this.game.height * 0.5;
-    this.radius = 80;
-    this.image = this.game.images.planet;
-  }
-
-  draw(context) {
-    context.drawImage(this.image, this.x - 100, this.y - 100);
-    if (this.game.debug) {
-      context.beginPath();
-      context.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
-      context.stroke();
+    constructor(game) {
+        this.game = game;
+        this.x = this.game.width * 0.5;
+        this.y = this.game.height * 0.5;
+        this.radius = 75;
+        this.image = this.game.images.planet;
+        this.columns = 16;
+        this.rows = 15;
+        this.spriteWidth = this.image.width / this.columns;
+        this.spriteHeight = this.image.height / this.rows;
+        this.loopDuration = 20000; // 72 frames em 5 segundos
+        this.frameIndex = 0;
+        this.frameTimer = 0;
+        this.frameInterval = this.loopDuration / (this.columns * this.rows);
     }
-  }
-}
 
+    update(deltaTime) {
+        this.frameTimer += Math.min(deltaTime, 100);
+
+        while (this.frameTimer >= this.frameInterval) {
+            this.frameTimer -= this.frameInterval;
+            this.frameIndex = (this.frameIndex + 1) % (this.columns * this.rows);
+            this.frameX = this.frameIndex % this.columns;
+            this.frameY = Math.floor(this.frameIndex / this.columns);
+        }
+    }
+
+    draw(context) {
+        context.drawImage(
+            this.image,
+            this.frameX * this.spriteWidth,
+            this.frameY * this.spriteHeight,
+            this.spriteWidth,
+            this.spriteHeight,
+            this.x - this.spriteWidth * 0.5, 
+            this.y - this.spriteHeight * 0.5,
+            this.spriteWidth,
+            this.spriteHeight
+        );
+        if (this.game.debug) {
+            context.beginPath();
+            context.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
+            context.stroke();
+        }
+    }
+}
+  
 class Player {
   constructor(game) {
     this.game = game;
     this.x = this.game.width * 0.5;
     this.y = this.game.height * 0.5;
-    this.radius = 20;
+    this.radius = 18;
     this.image = this.game.images.player;
     this.aim;
     this.angle = 0;
@@ -55,10 +84,10 @@ class Player {
     context.save();
     context.translate(this.x, this.y);
     context.rotate(this.angle);
-    context.drawImage(this.image, -this.radius + 10, -this.radius);
+    context.drawImage(this.image, -this.radius +7, -this.radius +4);
     if (this.game.debug) {
       context.beginPath();
-      context.arc(0, 0, this.radius, 0, Math.PI * 2);
+      context.arc(5, 5, this.radius, 0, Math.PI * 2);
       context.stroke();
     }
     context.restore();
@@ -110,7 +139,7 @@ class Player {
 class Bullet {
   constructor(game) {
     this.game = game;
-    this.radius = 20;
+    this.radius = 10;
     this.width = 20; 
     this.height = 20;
     this.frameX = 0;
@@ -156,6 +185,13 @@ class Bullet {
         -this.width / 2, -this.height / 2,
         this.width, this.height
       );
+
+      if (this.game.debug) {
+        context.beginPath();
+        context.arc(0, 0, this.radius, 0, Math.PI * 2);
+        context.stroke();
+      }
+
       context.restore();
     }
   }
@@ -185,7 +221,7 @@ class Bullet {
 class Bullet2 {
   constructor(game) {
     this.game = game;
-    this.radius = 20;
+    this.radius = 10;
     this.width = 20; 
     this.height = 20;
     this.frameX = 0;
@@ -229,6 +265,13 @@ class Bullet2 {
         -this.width / 2, -this.height / 2, 
         this.width, this.height 
       );
+
+      if (this.game.debug) {
+        context.beginPath();
+        context.arc(0, 0, this.radius, 0, Math.PI * 2);
+        context.stroke();
+      }
+
       context.restore();
     }
   }
@@ -261,6 +304,7 @@ class Enemy {
     this.x = 0;
     this.y = 0;
     this.radius = 20;
+    this.collisionRadius = 14; // Área útil menor que a animação
     this.width = this.radius * 2;
     this.height = this.radius * 2;
     this.speedX = 0;
@@ -320,7 +364,7 @@ class Enemy {
 
       if (this.game.debug) {
         context.beginPath();
-        context.arc(0, 0, this.radius, 0, Math.PI * 2);
+        context.arc(0, 0, this.collisionRadius, 0, Math.PI * 2);
         context.stroke();
         context.fillText(this.lives, 0, 0);
       }
@@ -545,6 +589,8 @@ class Game {
       context.drawImage(this.backgroundImage, 0, 0, this.width, this.height);
     }
 
+    this.planet.update(deltaTime);
+
     if (!this.started) {
       this.planet.draw(context);
       this.player.update();
@@ -630,7 +676,7 @@ class Game {
         message1 = 'You win!';
         message2 = 'Your score is ' + this.score + '!';
       } else {
-        message1 = 'You Lose!';
+        message1 = 'Game Over!';
         message2 = 'Try Again!';
       }
 
@@ -656,7 +702,9 @@ class Game {
     const dx = a.x - b.x;
     const dy = a.y - b.y;
     const distance = Math.hypot(dx, dy);
-    const sumOfRadius = a.radius + b.radius;
+    const radiusA = a.collisionRadius ?? a.radius;
+    const radiusB = b.collisionRadius ?? b.radius;
+    const sumOfRadius = radiusA + radiusB;
     return distance < sumOfRadius;
   }
 
