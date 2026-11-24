@@ -1,5 +1,5 @@
-'use client'
-import api from '@/lib/api';
+"use client";
+import api from "@/lib/api";
 import { useEffect, useRef, useState } from "react";
 
 const Canvas = () => {
@@ -15,7 +15,9 @@ const Canvas = () => {
     if (!canvas || !collisionCanvas) return;
 
     const ctx = canvas.getContext("2d");
-    const collisionCtx = collisionCanvas.getContext('2d', { willReadFrequently: true });
+    const collisionCtx = collisionCanvas.getContext("2d", {
+      willReadFrequently: true,
+    });
     let scoreJaSincronizado = false;
 
     const syncHighScore = async (valorAtual) => {
@@ -23,18 +25,21 @@ const Canvas = () => {
       if (!Number.isFinite(valor) || valor <= 0) return;
 
       try {
-        const { data: scoreSalvoNaApi } = await api.get('/usuarios/score1');
+        const { data: scoreSalvoNaApi } = await api.get("/usuarios/score1");
         const scoreAtualNaApi = Number(scoreSalvoNaApi ?? 0);
 
         if (valor <= scoreAtualNaApi) {
           return;
         }
 
-        await api.patch('/usuarios/score1', { score1: valor });
-        localStorage.setItem('score1', String(valor));
-        console.log('score1 atualizado na API com sucesso:', valor);
+        await api.patch("/usuarios/score1", { score1: valor });
+        localStorage.setItem("score1", String(valor));
+        console.log("score1 atualizado na API com sucesso:", valor);
       } catch (error) {
-        console.error('Erro ao comparar e atualizar score1 na API:', error.response?.data?.message || error.message);
+        console.error(
+          "Erro ao comparar e atualizar score1 na API:",
+          error.response?.data?.message || error.message,
+        );
       }
     };
 
@@ -54,19 +59,19 @@ const Canvas = () => {
     let difficultyStage = 1;
     const enemiesPerStage = 20;
     const stageEnemyPngs = [
-      '/assets/enemy/sideshot/mosca.png',
-      '/assets/enemy/sideshot/mosca2.png',
-      '/assets/enemy/sideshot/mosca3.png',
-      '/assets/enemy/sideshot/robocoptero.png',
-      '/assets/enemy/sideshot/robocoptero2.png',
-      '/assets/enemy/sideshot/spore1.png',
-      '/assets/enemy/sideshot/spore2.png',
-      '/assets/enemy/sideshot/babul.png',
-      '/assets/enemy/sideshot/bot1.png',
+      "/assets/enemy/sideshot/mosca.png",
+      "/assets/enemy/sideshot/mosca2.png",
+      "/assets/enemy/sideshot/mosca3.png",
+      "/assets/enemy/sideshot/robocoptero.png",
+      "/assets/enemy/sideshot/robocoptero2.png",
+      "/assets/enemy/sideshot/spore1.png",
+      "/assets/enemy/sideshot/spore2.png",
+      "/assets/enemy/sideshot/babul.png",
+      "/assets/enemy/sideshot/bot1.png",
     ];
     const stageBackgrounds = stageEnemyPngs.map((_, index) => {
       const background = new Image();
-      background.src = `/assets/background/sideshot/ss_background${String(index + 1).padStart(3, '0')}.png`;
+      background.src = `/assets/background/sideshot/ss_background${String(index + 1).padStart(3, "0")}.png`;
       return background;
     });
     let gameOver = false;
@@ -78,7 +83,6 @@ const Canvas = () => {
     let alvos = [];
     let explosions = [];
     class Alvo {
-      
       constructor() {
         this.spriteWidth = 128;
         this.spriteHeight = 128;
@@ -87,20 +91,35 @@ const Canvas = () => {
         this.height = this.spriteHeight * this.sizeModifier;
         this.x = canvas.width;
         this.y = Math.random() * (canvas.height - this.height);
-        this.directionX = (Math.random() * 4 + 3) * (1 + (difficultyStage - 1) * 0.1);
+        this.directionX =
+          (Math.random() * 4 + 3) * (1 + (difficultyStage - 1) * 0.1);
         this.directionY = Math.random() * 4 - 2.5;
         this.markForDeletion = false;
         this.image = new Image();
         this.maxFrame = 0;
         this.image.onload = () => {
-          this.maxFrame = Math.max(0, Math.floor(this.image.naturalWidth / this.spriteWidth) - 1);
+          this.maxFrame = Math.max(
+            0,
+            Math.floor(this.image.naturalWidth / this.spriteWidth) - 1,
+          );
         };
         this.image.src = stageEnemyPngs[stage - 1];
         this.frame = 0;
         this.timeSinceFlap = 0;
         this.flapInterval = Math.random() * 80 + 80;
-        this.randomColors = [Math.floor(Math.random() * 255), Math.floor(Math.random() * 255), Math.floor(Math.random() * 255)];
-        this.color = "rgb(" + this.randomColors[0] + "," + this.randomColors[1] + "," + this.randomColors[2] + ")";
+        this.randomColors = [
+          Math.floor(Math.random() * 255),
+          Math.floor(Math.random() * 255),
+          Math.floor(Math.random() * 255),
+        ];
+        this.color =
+          "rgb(" +
+          this.randomColors[0] +
+          "," +
+          this.randomColors[1] +
+          "," +
+          this.randomColors[2] +
+          ")";
       }
       update(deltaTime) {
         if (this.y < 0 || this.y > canvas.height - this.height) {
@@ -118,18 +137,34 @@ const Canvas = () => {
         if (this.x < 0 - this.width) {
           gameOver = true;
           saveScore();
-          setShowRestart(true); 
+          setShowRestart(true);
         }
       }
       draw() {
         collisionCtx.fillStyle = this.color;
         collisionCtx.fillRect(this.x, this.y, this.width, this.height);
-        ctx.drawImage(this.image, this.frame * this.spriteWidth, 0, this.spriteWidth, this.spriteHeight, this.x, this.y, this.width, this.height);
+        ctx.drawImage(
+          this.image,
+          this.frame * this.spriteWidth,
+          0,
+          this.spriteWidth,
+          this.spriteHeight,
+          this.x,
+          this.y,
+          this.width,
+          this.height,
+        );
       }
     }
 
     class Explosion {
-      constructor(x, y, size, imageSrc = '/assets/misc/sideshot/explosion14.png', frameCount = 14){
+      constructor(
+        x,
+        y,
+        size,
+        imageSrc = "/assets/misc/sideshot/explosion14.png",
+        frameCount = 14,
+      ) {
         this.image = new Image();
         this.image.src = imageSrc;
         this.spriteWidth = 128;
@@ -139,27 +174,39 @@ const Canvas = () => {
         this.x = x;
         this.y = y;
         this.sound = new Audio();
-        this.sound.src = '/assets/misc/sideshot/ram.wav';
+        this.sound.src = "/assets/misc/sideshot/ram.wav";
         this.frame = 0;
         this.timeSinceLastFrame = 0;
         this.frameInterval = 100;
         this.markForDeletion = false;
       }
-      update(deltaTime){
-        if (this.frame === 0) this.sound.play().catch(e => console.log("Áudio bloqueado"));
+      update(deltaTime) {
+        if (this.frame === 0)
+          this.sound.play().catch((e) => console.log("Áudio bloqueado"));
         this.timeSinceLastFrame += deltaTime;
-        if (this.timeSinceLastFrame > this.frameInterval){
+        if (this.timeSinceLastFrame > this.frameInterval) {
           this.frame++;
           this.timeSinceLastFrame = 0;
           if (this.frame >= this.frameCount) this.markForDeletion = true;
         }
       }
-      draw(){
-        ctx.drawImage(this.image, this.frame * this.spriteWidth, 0, this.spriteWidth, this.spriteHeight, this.x, this.y - this.size/4, this.size, this.size);
+      draw() {
+        ctx.drawImage(
+          this.image,
+          this.frame * this.spriteWidth,
+          0,
+          this.spriteWidth,
+          this.spriteHeight,
+          this.x,
+          this.y - this.size / 4,
+          this.size,
+          this.size,
+        );
       }
     }
 
     function drawScore() {
+      ctx.textAlign = "left";
       ctx.fillStyle = "black";
       ctx.fillText("Score: " + score, 50, 75);
       ctx.fillText("Stage: " + stage, 50, 135);
@@ -175,18 +222,26 @@ const Canvas = () => {
       }
     }
 
-    function drawGameOver(){
+    function drawGameOver() {
       ctx.fillStyle = "rgba(98, 125, 245, 0.8)";
       ctx.fillRect(0, 0, canvas.width, canvas.height);
-      ctx.textAlign = 'center';
-      
-      ctx.fillStyle = 'black';
-      ctx.fillText('GAME OVER', canvas.width/2, canvas.height/2 - 50);
-      ctx.fillText('Your score is: ' + score, canvas.width/2, canvas.height/2 + 50);
-      
-      ctx.fillStyle = 'white';
-      ctx.fillText('GAME OVER', canvas.width/2 + 5, canvas.height/2 - 45);
-      ctx.fillText('Your score is: ' + score, canvas.width/2 + 5, canvas.height/2 + 55);
+      ctx.textAlign = "center";
+
+      ctx.fillStyle = "black";
+      ctx.fillText("GAME OVER", canvas.width / 2, canvas.height / 2 - 50);
+      ctx.fillText(
+        "Your score is: " + score,
+        canvas.width / 2,
+        canvas.height / 2 + 50,
+      );
+
+      ctx.fillStyle = "white";
+      ctx.fillText("GAME OVER", canvas.width / 2 + 5, canvas.height / 2 - 45);
+      ctx.fillText(
+        "Your score is: " + score,
+        canvas.width / 2 + 5,
+        canvas.height / 2 + 55,
+      );
     }
 
     function startGame() {
@@ -207,11 +262,12 @@ const Canvas = () => {
       const detectPixelColor = collisionCtx.getImageData(clickX, clickY, 1, 1);
       const pc = detectPixelColor.data;
 
-      const alvoAtingido = alvos.find((object) =>
-        !object.markForDeletion &&
-        object.randomColors[0] === pc[0] &&
-        object.randomColors[1] === pc[1] &&
-        object.randomColors[2] === pc[2]
+      const alvoAtingido = alvos.find(
+        (object) =>
+          !object.markForDeletion &&
+          object.randomColors[0] === pc[0] &&
+          object.randomColors[1] === pc[1] &&
+          object.randomColors[2] === pc[2],
       );
 
       if (alvoAtingido) {
@@ -223,7 +279,9 @@ const Canvas = () => {
         stage = ((difficultyStage - 1) % stageEnemyPngs.length) + 1;
         if (stage !== previousStage) alvos = [];
         saveScore();
-        explosions.push(new Explosion(alvoAtingido.x, alvoAtingido.y, alvoAtingido.width));
+        explosions.push(
+          new Explosion(alvoAtingido.x, alvoAtingido.y, alvoAtingido.width),
+        );
       }
     };
 
@@ -252,15 +310,19 @@ const Canvas = () => {
         }
 
         drawScore();
-        [...alvos, ...explosions].forEach(object => object.update(deltaTime));
-        [...alvos, ...explosions].forEach(object => object.draw());
+        [...alvos, ...explosions].forEach((object) => object.update(deltaTime));
+        [...alvos, ...explosions].forEach((object) => object.draw());
 
         alvos = alvos.filter((object) => !object.markForDeletion);
         explosions = explosions.filter((object) => !object.markForDeletion);
       } else {
         ctx.fillStyle = "white";
         ctx.textAlign = "center";
-        ctx.fillText("Clique ou pressione uma tecla para iniciar", canvas.width / 2, canvas.height * 0.85);
+        ctx.fillText(
+          "Clique ou pressione uma tecla para iniciar",
+          canvas.width / 2,
+          canvas.height * 0.85,
+        );
       }
 
       if (!gameOver) {
@@ -272,7 +334,7 @@ const Canvas = () => {
         }
       }
     }
-    
+
     animate(0);
 
     return () => {
@@ -280,18 +342,45 @@ const Canvas = () => {
       window.removeEventListener("keydown", handleKeyDown);
       cancelAnimationFrame(animationFrameId);
     };
-  }, [gameId]); 
+  }, [gameId]);
 
   const handleRestart = () => {
     window.localStorage.setItem(STORAGE_KEY, "0");
     setShowRestart(false);
-    setGameId(prev => prev + 1);
+    setGameId((prev) => prev + 1);
   };
 
   return (
-    <div style={{ position: "relative", width: "100vw", height: "100vh", overflow: "hidden", backgroundColor: "#1a1a1a" }}>
-      <canvas ref={canvasRef} style={{ position: "absolute", top: 0, left: 0, zIndex: 1, display: "block" }} />
-      <canvas ref={collisionCanvasRef} style={{ position: "absolute", top: 0, left: 0, opacity: 0, zIndex: 0, pointerEvents: "none" }} />
+    <div
+      style={{
+        position: "relative",
+        width: "100vw",
+        height: "100vh",
+        overflow: "hidden",
+        backgroundColor: "#1a1a1a",
+      }}
+    >
+      <canvas
+        ref={canvasRef}
+        style={{
+          position: "absolute",
+          top: 0,
+          left: 0,
+          zIndex: 1,
+          display: "block",
+        }}
+      />
+      <canvas
+        ref={collisionCanvasRef}
+        style={{
+          position: "absolute",
+          top: 0,
+          left: 0,
+          opacity: 0,
+          zIndex: 0,
+          pointerEvents: "none",
+        }}
+      />
       {showRestart && (
         <button
           type="button"
@@ -302,7 +391,7 @@ const Canvas = () => {
             top: "80%",
             left: "50%",
             transform: "translate(-50%, -50%)",
-            zIndex: 10
+            zIndex: 10,
           }}
         >
           Restart Game
