@@ -95,7 +95,7 @@ export default function New(){
                 <p>Repita o Email: <input type="email" id='repeatEmail' size='25' value={inputRepeatEmail} onChange={e => setRepeatEmail(e.target.value)} onKeyUp={handleKeyUp}/></p>
                 <p>Password: <input type="password" id='password' size='25' value={inputPassword} onChange={e => setInputPassword(e.target.value)} onKeyUp={handleKeyUp}/></p>
             </div>
-            <button className='cadastrar2' onClick={handleButtonClick}>Cadastrar</button>
+            <button className='cadastrar2' onClick={handleButtonClick}>Confirmar Cadastro</button>
             <br /><br />
             <Link href='/'><button className='voltar'>Voltar</button></Link>
         </div>
