@@ -2,8 +2,8 @@
         --cor-bordas: #1aa7b4;
         --cor-sombra: 0 0 25px #c2fdff;
         --cor-txt-hover:  rgb(19, 1, 1);
-        --cor-border-hover: 2px solid #c2fdffe1;
-        
+        --cor-buttonBorder-hover: 2px solid #c2fdffe1;
+        --cor-buttonBorder: 2px solid #000000e1;
       }
 html,
 
@@ -35,6 +35,8 @@ html,
 }
 
 .entrar {
+  position: relative;
+  overflow: hidden;
   text-align: center;
   align-content: center;
   align-items: center;
@@ -43,7 +45,7 @@ html,
   font-size: 14px;
   padding: 10px 15px;
   border-radius: 20px;
-  border: 2px solid #07b91fc2;
+  border: 2px solid #017c11c2;
   background-color: transparent;
   color: white;
   cursor: pointer;
@@ -55,10 +57,38 @@ html,
   background-color: #2ddb16;
   box-shadow: var(--cor-sombra);
   color: var(--cor-txt-hover);
-  border: var(--cor-border-hover);
+  border: var(--cor-buttonBorder-hover);
 }
 
+.entrar::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: radial-gradient(
+    circle 45px at var(--x, -100px) var(--y, -100px),
+    rgba(255, 255, 255, 0.45),
+    transparent 80%
+  );
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  pointer-events: none;
+}
+
+.entrar:hover::before {
+  opacity: 1;
+}
+
+.entrar:active {
+  transform: scale(0.96);
+}
+
+
 .cadastrar {
+  position: relative;
+  overflow: hidden;
   text-align: center;
   align-content: center;
   align-items: center;
@@ -72,15 +102,41 @@ html,
   color: white;
   cursor: pointer;
   transition: all 0.3s ease;
-  margin-top: 20px;
+  margin-top: 15px;
 }
 
 .cadastrar:hover {
   background-color: #e7d910fa;
   box-shadow: var(--cor-sombra);
   color: var(--cor-txt-hover);
-  border: var(--cor-border-hover);
+  border: var(--cor-buttonBorder-hover);
 }
+
+.cadastrar::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: radial-gradient(
+    circle 45px at var(--x, -100px) var(--y, -100px),
+    rgba(255, 255, 255, 0.45),
+    transparent 80%
+  );
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  pointer-events: none;
+}
+
+.cadastrar:hover::before {
+  opacity: 1;
+}
+
+.cadastrar:active {
+  transform: scale(0.96);
+}
+
 body {
   margin: 0;
   padding: 0;
@@ -230,7 +286,7 @@ a{
   background-color: #eea70d;
   box-shadow: var(--cor-sombra);
   color: var(--cor-txt-hover);
-  border: var(--cor-border-hover);
+  border: var(--cor-buttonBorder-hover);
 }
 
 .altDados {
@@ -253,7 +309,7 @@ a{
   background-color: #f3ef12;
   box-shadow: var(--cor-sombra);
   color: var(--cor-txt-hover);
-  border: var(--cor-border-hover);
+  border: var(--cor-buttonBorder-hover);
 }
 
 
@@ -277,7 +333,7 @@ a{
   background-color: #ccee0de7;
   box-shadow: var(--cor-sombra);
   color: var(--cor-txt-hover);
-  border: var(--cor-border-hover);
+  border: var(--cor-buttonBorder-hover);
 }
 
 .recuperarSenha {
@@ -301,7 +357,7 @@ a{
   background-color: #f4d03f;
   box-shadow: var(--cor-sombra);
   color: var(--cor-txt-hover);
-  border: var(--cor-border-hover);
+  border: var(--cor-buttonBorder-hover);
 }
 
 .tentarNovamente {
@@ -325,7 +381,7 @@ a{
   background-color: #e74c3c;
   box-shadow: var(--cor-sombra);
   color: var(--cor-txt-hover);
-  border: var(--cor-border-hover);
+  border: var(--cor-buttonBorder-hover);
 }
 
 .new-container {
@@ -393,7 +449,7 @@ a{
   background-color: #2ddb16;
   box-shadow: var(--cor-sombra);
   color: var(--cor-txt-hover);
-  border: var(--cor-border-hover);
+  border: var(--cor-buttonBorder-hover);
 }
 
 .dashboard-container {
@@ -532,7 +588,7 @@ a{
   box-shadow: var(--cor-sombra);
   transform: translateY(-1px);
   color: var(--cor-txt-hover);
-  border: var(--cor-border-hover);
+  border: var(--cor-buttonBorder-hover);
 }
 
 .jogarI:hover {
@@ -540,7 +596,7 @@ a{
   box-shadow: var(--cor-sombra);
   transform: translateY(-1px);
   color: var(--cor-txt-hover);
-  border: var(--cor-border-hover);
+  border: var(--cor-buttonBorder-hover);
 }
 
 .jogarSs:focus-visible,
@@ -620,7 +676,7 @@ a{
   background-color: #f70808ec;
   box-shadow: var(--cor-sombra);
   color: var(--cor-txt-hover);
-  border: var(--cor-border-hover);
+  border: var(--cor-buttonBorder-hover);
 }
 
 .reiniciarJogo {
@@ -644,7 +700,7 @@ a{
   background-color: #eff309;
   box-shadow: var(--cor-sombra);
   color: var(--cor-txt-hover);
-  border: var(--cor-border-hover);
+  border: var(--cor-buttonBorder-hover);
 }
 
 .account-page {
@@ -754,7 +810,7 @@ a{
   color: #111;
   box-shadow: var(--cor-sombra);
   color: var(--cor-txt-hover);
-  border: var(--cor-border-hover);
+  border: var(--cor-buttonBorder-hover);
 }
 
 .account-button.secondary {
@@ -768,7 +824,7 @@ a{
   background: #4bddf0;
   box-shadow: var(--cor-sombra);
   color: var(--cor-txt-hover);
-  border: var(--cor-border-hover);
+  border: var(--cor-buttonBorder-hover);
 }
 
 .account-message {
@@ -801,7 +857,7 @@ a{
   background: #f4d03f;
   box-shadow: var(--cor-sombra);
   color: var(--cor-txt-hover);
-  border: var(--cor-border-hover);
+  border: var(--cor-buttonBorder-hover);
 }
 
 .delete-button {
@@ -816,7 +872,7 @@ a{
   background: #f03a0d;
   animation: piscar 2s infinite;
   color: var(--cor-txt-hover);
-  border: var(--cor-border-hover);
+  border: var(--cor-buttonBorder-hover);
 }
 
 @keyframes piscar {
@@ -987,7 +1043,7 @@ a{
   background: rgba(255, 255, 255, 0.08);
   box-shadow: var(--cor-sombra);
   color: green;
-  border: var(--cor-border-hover);
+  border: var(--cor-buttonBorder-hover);
 }
 
 .confirm-delete-button {
@@ -1000,7 +1056,7 @@ a{
   transform: translateY(-1px);
   box-shadow: var(--cor-sombra);
   color: var(--cor-txt-hover);
-  border: var(--cor-border-hover);
+  border: var(--cor-buttonBorder-hover);
 }
 
 @keyframes modalFadeIn {
